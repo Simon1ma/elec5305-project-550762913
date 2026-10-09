@@ -1,0 +1,11 @@
+Synthetic demonstration only; not real-speech evaluation.
+MATLAB: 26.1.0.3346908 (R2026a) Update 5
+Seed: 7
+Noise: white Gaussian plus 60/120 Hz hum
+Prefix samples excluded from scoring: 4800
+Unit-gain reconstruction relative error: 2e-16
+Complete noise-only frames: 17
+Shared WAV playback scale (not used for metrics): 0.584012533
+Unprocessed: output SNR 5.000000 dB; improvement 0.000000 dB
+FIR: output SNR 12.318176 dB; improvement 7.318176 dB
+Wiener: output SNR 17.036485 dB; improvement 12.036485 dB

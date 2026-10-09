@@ -1,52 +1,52 @@
-# elec5305-project-550762913
+# ELEC5305 Project - Yixiang Ma (550762913)
 
-## Speech Noise Reduction Using STFT-Based Wiener Filtering in Python
+## Comparative Evaluation of FIR and STFT-Domain Wiener Filtering for Speech Enhancement in MATLAB
 
-This repository contains the ELEC5305 project proposal and future implementation files for a Python-based speech noise reduction system.
+**Project site:** https://simon1ma.github.io/elec5305-project-550762913/
 
-The proposed project uses short-time Fourier transform (STFT), Wiener filtering, and inverse STFT overlap-add reconstruction to reduce additive background noise in speech recordings. The final implementation will compare clean, noisy, and enhanced speech using waveform plots, spectrograms, and SNR improvement.
+**Progress updated:** 9 October 2026
 
-## Project Information
+This project compares a fixed FIR low-pass baseline with STFT-domain Wiener filtering. The initial Python proposal has evolved into a MATLAB implementation, extending the synthetic-signal work from Audio Processing Report 1. The previous proposal is retained as a historical planning document.
 
-- Course: ELEC5305
-- Student Name: Yixiang Ma
-- Student ID: 550762913
-- GitHub Username: Simon1ma
-- Repository: https://github.com/Simon1ma/elec5305-project-550762913.git
-- Project Website: https://simon1ma.github.io/elec5305-project-550762913/
-- Topic: Speech enhancement and noise reduction
-- Main tools: Python, NumPy, SciPy, librosa or soundfile, matplotlib
+## Implemented and Verified
 
-## Proposal
+- A reproducible 3-second synthetic speech-like signal at 16 kHz.
+- Controlled mixing with white Gaussian noise and 60/120 Hz hum at 5 dB input SNR.
+- Order-96 FIR baseline, 1200 Hz cutoff, Hamming window, and offline forward-backward filtering.
+- Decision-directed STFT-domain Wiener enhancement using an initial 0.3-second noise-only prefix.
+- Signal reconstruction checks, shared-input comparison, plots, metrics, and audio examples.
+- Reference-to-error SNR on unnormalised outputs, excluding the noise-only prefix.
 
-The current project proposal is provided in:
+| Method | Input SNR (dB) | Output SNR (dB) | Improvement (dB) |
+| --- | --- | --- | --- |
+| Unprocessed | 5.00 | 5.00 | 0.00 |
+| FIR | 5.00 | 12.32 | 7.32 |
+| Wiener | 5.00 | 17.04 | 12.04 |
 
-- `ELEC5305_Project_Proposal_Yixiang_Ma_550762913.pdf`
-- `ELEC5305_Project_Proposal_STFT_Wiener_Filtering.md`
+These are measured results for one synthetic example. They do not establish performance on real speech or improved intelligibility. No LibriSpeech or DEMAND experiments have been completed yet.
 
-The proposal describes the project motivation, STFT-based methodology, expected outcomes, timeline, and academic references.
+[Detailed results and limitations](results/preliminary/README.md) | [Code and execution instructions](code/README.md) | [Brief progress submission](docs/project_progress_submission.md)
 
-## Planned Repository Contents
+## Run in MATLAB
 
-- Project proposal PDF
-- Python implementation scripts or notebooks
-- Example speech/noise samples or data-loading instructions
-- Spectrogram and waveform comparison figures
-- Evaluation results and final report
+Requires MATLAB with Signal Processing Toolbox. From the repository root:
 
-## Planned Method
+```matlab
+addpath(fullfile(pwd, 'code'));
+results = main_preliminary();
+```
 
-1. Mix clean speech with background noise at controlled SNR levels.
-2. Convert the noisy signal to the time-frequency domain using STFT.
-3. Estimate the noise spectrum from low-energy or noise-only frames.
-4. Apply a Wiener filtering gain to reduce noise-dominated frequency bins.
-5. Reconstruct the enhanced speech signal using inverse STFT and overlap-add.
-6. Evaluate the result using SNR improvement and spectrogram comparisons.
+Run `check_preliminary()` for reconstruction, length, gain, prefix-selection, SNR-mixing, and repeatability checks. The tested MATLAB version is R2026a Update 5.
 
-## GitHub Pages
+## Repository Contents
 
-The intended GitHub Pages URL is:
+- `code/`: runnable MATLAB implementation, configuration, and checks.
+- `results/preliminary/`: actual numerical outputs, English-labelled plots, audio examples, and unscaled signals in a MAT file.
+- `docs/`: progress submission description.
+- `index.md`: GitHub Pages project overview.
 
-https://simon1ma.github.io/elec5305-project-550762913/
+## Next Work
 
-If GitHub displays a different Pages URL after enabling Pages in repository settings, the displayed URL should be used as the final project website link.
+Collect a small subset of recorded speech from [LibriSpeech](https://www.openslr.org/12/) and environmental noise from [DEMAND](https://zenodo.org/records/1227121). Separate development and evaluation speakers, select parameters on development data, then evaluate fixed settings at 0, 5, and 10 dB. Add segmental SNR and investigate speech distortion and changing-noise failures.
+
+Full source datasets will not be uploaded. Selected file IDs, channels, segment offsets, and seeds will be documented.
