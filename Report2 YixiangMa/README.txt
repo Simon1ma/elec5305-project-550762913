@@ -9,7 +9,8 @@ audio and custom helpers are included. No network, Python, Rust, pretrained
 model, microphone, or external project repository is needed to run the report.
 
 Requirements: MATLAB R2026a Update 5 (tested), Signal Processing Toolbox,
-and Wavelet Toolbox. The CWT analysis requires the Wavelet Toolbox.
+and Wavelet Toolbox. resample and hann require Signal Processing Toolbox;
+cwt requires Wavelet Toolbox. The Live Script checks these functions at startup.
 The companion run_report2.m contains the same executable sections without
 rich-text formatting, for non-Live-Editor checks.
 Run check_report2() for additional reconstruction and odd/even-grid tests.
@@ -28,4 +29,3 @@ Wiener results as new evidence.
 Scope: an offline educational analysis of one utterance. Reference-to-error SNR
 measures distortion against clean speech, not noise-reduction gain. There is
 no human intelligibility test, neural training, or real-time claim.
-

@@ -6,6 +6,8 @@
 
 % Author: Yixiang Ma | Student ID: 550762913 | Date: 29 October 2026
 
+% Tested environment: MATLAB R2026a Update 5 with Signal Processing Toolbox (resample and hann) and Wavelet Toolbox (cwt). Input audio and all custom helpers are included in the submission folder.
+
 clear; close all; clc;
 reportFolder = pwd;
 if ~isfile(fullfile(reportFolder,'voicebank_p232_003.wav'))
@@ -14,6 +16,8 @@ end
 assert(isfile(fullfile(reportFolder,'voicebank_p232_003.wav')), ...
     'Set Current Folder to the extracted Report2 YixiangMa folder.');
 addpath(reportFolder);
+assert(exist('resample','file')==2 && exist('hann','file')==2, ...
+    'Signal Processing Toolbox is required (resample and hann).');
 assert(exist('cwt','file')==2, 'Wavelet Toolbox is required.');
 
 %% 2.2 Objective

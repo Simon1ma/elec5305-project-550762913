@@ -27,6 +27,7 @@ No blocking omission was found in the checked Report 2 package. This is a techni
 | Required inputs and helpers | The ZIP contains 15 files, including the input recording and all custom helper functions. | Pass |
 | Exact submission naming | `Report2 YixiangMa/`, `Report2 YixiangMa.mlx`, `Report2 YixiangMa.pdf`, and `Report2 YixiangMa.zip`. | Pass |
 | Independent reproducibility | Final ZIP extracted to a new folder and run in a new MATLAB process with the default MATLAB path restored. | Pass |
+| Runtime declaration and startup checks | Section 2.1 and README specify MATLAB R2026a Update 5 and both toolboxes; startup checks cover `resample`, `hann`, and `cwt`. | Pass |
 | Language | Report prose, source comments, and labels are English; no CJK text found in the PDF or submitted text sources. | Pass |
 
 ## Executed Verification
@@ -38,7 +39,9 @@ No blocking omission was found in the checked Report 2 package. This is a techni
 - `check_report2()` additionally passed three non-frame-aligned signal lengths, odd/even modulation grids, finite-output checks, and mask bounds.
 - Reproduced non-baseline metrics agreed with the original values exactly. Bypass SNR remained above 280 dB; small floating-point variations there are not physical enhancement gains.
 - The final 11-page PDF was rendered and inspected; no clipping or overlapping plot labels was observed.
-- A prose-only revision shortened the report's text from 1,778 to 1,626 words across 18 paragraphs. Structure, executable blocks, input audio, helpers, all seven equations, citations, references, and saved numerical outputs were checked against commit `038c1d4` and retained. The revised ZIP was tested again independently.
+- The earlier prose-only revision shortened the text from 1,778 to 1,626 words across 18 paragraphs without changing its experiment. This packaging revision adds a runtime declaration and toolbox availability guards; the signal-processing algorithms, settings, equations, and references remain unchanged.
+- An independent `r2_save` test began with a nonexistent destination folder, without running any plotting function there. It created `generated/`, saved both CSV tables with values matching memory, and wrote four readable mono 24-bit WAVs at 16 kHz, each containing 114,958 samples. Decoded audio matched the shared-gain reference within 24-bit quantisation tolerance. The analysis MAT file and run summary were also present.
+- MATLAB dependency analysis of the companion script found no required source file outside the extracted report folder or MATLAB installation.
 
 ## Comparison with the Samples
 
@@ -57,6 +60,6 @@ The experiment is deliberately narrower than the broad samples: it tests one rec
 
 [Download the ZIP](<../submissions/Report2 YixiangMa.zip>) | [View the PDF](<../Report2 YixiangMa/Report2 YixiangMa.pdf>) | [Live Script and sources](<../Report2 YixiangMa/>)
 
-- Size: 4,124,185 bytes.
-- SHA256: `a48fdcf6a08d6d0efe1630ece103561c43ceee046607c29b2dbbc12a1b48ca09`.
+- Size: 4,125,638 bytes.
+- SHA256: `c5a8faaa8f3da861e270eb495d53b4736050b1bd46d6a780194beec5bf944ba9`.
 - Regenerable MAT files, listening outputs, temporary logs, and unrelated Report 1/Final Project changes are not part of this submission package.
