@@ -1,10 +1,18 @@
 # ELEC5305 Project - Yixiang Ma (550762913)
 
-## Comparative Evaluation of FIR and STFT-Domain Wiener Filtering for Speech Enhancement in MATLAB
+## Latency-Quality Trade-offs in Real-Time Causal Speech Enhancement
 
 **Project site:** https://simon1ma.github.io/elec5305-project-550762913/
 
-**Progress updated:** 9 October 2026
+**Progress updated:** 28 October 2026
+
+Following teacher feedback, the research focus is now the latency-quality trade-off of causal enhancement. Wiener filtering is the classical baseline. The first revised milestone implements sequential-block processing and measures quality, output scheduling, and compute cost on one recorded 48 kHz speech/noise mixture.
+
+[Current causal experiment and measured results](results/latency_milestone1/README.md) | [Run the revised experiment](code/latency/README.md)
+
+Four analysis windows (10/20/40/80 ms) passed reconstruction, future-invariance, arbitrary-chunk, and impulse-shift checks. Output SNRs at 0 dB input are 3.12/2.83/1.92/1.28 dB; STOI values are 0.9273/0.9295/0.9307/0.9330. These are one development utterance, not a held-out benchmark. Latency definitions and all RTF measurements are documented with the results. Transient keyboard noise and a pretrained DeepFilterNet comparison remain future work.
+
+## Historical Offline Progress (9 October 2026)
 
 This project compares a fixed FIR low-pass baseline with STFT-domain Wiener filtering. The initial Python proposal has evolved into a MATLAB implementation, extending the synthetic-signal work from Audio Processing Report 1. The previous proposal is retained as a historical planning document.
 

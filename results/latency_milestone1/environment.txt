@@ -1,0 +1,10 @@
+MATLAB: 26.1.0.3346908 (R2026a) Update 5
+Computer: PCWIN64
+CPU: Intel64 Family 6 Model 165 Stepping 2, GenuineIntel
+Target input SNR: 0 dB
+Calibration: 300 ms
+Smoothing time constant: 100 ms; gain floor: 0.05
+Timing: 7 repeats after 1 warm-up per setting; includes init and flush; excludes I/O, plots, quality metrics.
+RTF denominator: full input duration including calibration.
+Oldest-sample ready delay excludes compute, sound-card, OS, and network delay.
+Quality alignment: remove known H-sample transport shift and 300 ms prefix; no lag search.

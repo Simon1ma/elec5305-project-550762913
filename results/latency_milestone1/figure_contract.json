@@ -1,0 +1,15 @@
+{
+  "question": "How does the measured block-ready delay relate to intelligibility and fidelity in this one recorded-speech mixture?",
+  "scope": "One utterance, one noise recording segment, four configurations; no population inference",
+  "archetype": "quantitative grid",
+  "backend": "Python/matplotlib",
+  "panels": {
+    "a": "STOI; intelligibility estimate, not a listening-test result",
+    "b": "SI-SDR; scale-invariant waveform distortion"
+  },
+  "source_data": "metrics.csv; noisy_metrics.json",
+  "uncertainty": "None for quality: n=1 utterance. Timing variation is reported separately in benchmark.csv.",
+  "exclusions": "No measured configurations excluded. Noisy is a horizontal quality reference, not a latency-matched enhancer.",
+  "delay_definition": "Oldest logical sample age when its H-sample output block is ready; includes capture packet, excludes compute/device/OS/network delays",
+  "line_interpretation": "Lines connect four observed configurations as guides; no interpolation model was fitted"
+}

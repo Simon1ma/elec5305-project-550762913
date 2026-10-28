@@ -1,13 +1,42 @@
 ---
 layout: default
-title: FIR and STFT-Domain Wiener Speech Enhancement in MATLAB
+title: Latency-Quality Trade-offs in Causal Speech Enhancement
 ---
 
-# FIR and STFT-Domain Wiener Speech Enhancement in MATLAB
+# Latency-Quality Trade-offs in Causal Speech Enhancement
 
 **Student:** Yixiang Ma | **SID:** 550762913 | **Course:** ELEC5305
 
-**Progress updated:** 9 October 2026
+**Progress updated:** 28 October 2026
+
+## Revised Research Question
+
+How much enhancement quality can a causal system retain under a strict latency budget? Following teacher feedback, Wiener filtering is now a classical baseline for studying this trade-off, rather than the research contribution itself.
+
+## New Progress: Causal Recorded-Speech Experiment
+
+The revised MATLAB processor consumes sequential input blocks with persistent state and no access to future samples. The first experiment uses one native 48 kHz VoiceBank speech utterance and a DEMAND washing-machine noise recording at 0 dB input SNR, with 300 ms initial noise calibration. Four 10/20/40/80 ms analysis windows passed reconstruction, future-invariance, chunking, and impulse-shift checks.
+
+| Window (ms) | Oldest-sample ready delay (ms) | Output SNR (dB) | SI-SDR (dB) | STOI | Median RTF |
+| --- | --- | --- | --- | --- | --- |
+| 10 | 10 | 3.12 | 2.65 | 0.9273 | 0.0291 |
+| 20 | 20 | 2.83 | 2.76 | 0.9295 | 0.0192 |
+| 40 | 40 | 1.92 | 1.87 | 0.9307 | 0.0146 |
+| 80 | 80 | 1.28 | 1.23 | 0.9330 | 0.0118 |
+
+The unprocessed STOI is 0.9310. Higher SNR does not imply higher STOI in this example. These small quality differences are observations on one development utterance; they do not establish the best general window size.
+
+![Recorded-speech quality versus block-ready delay](results/latency_milestone1/figures/latency_quality.png)
+
+The plotted delay is the oldest sample's age when its output block is ready. It includes the capture packet and excludes CPU/device/network delays. The waveform transport shift is separately 5/10/20/40 ms; 300 ms calibration is a separate startup requirement. RTF is seven-repeat median compute time divided by input duration, with I/O and plotting excluded. This causal file simulation is not an end-to-end microphone latency measurement or a hard real-time guarantee.
+
+[Detailed revised results and limitations](results/latency_milestone1/) | [Revised code and reproduction](https://github.com/Simon1ma/elec5305-project-550762913/tree/main/code/latency)
+
+Actual keyboard/transient-noise evaluation, larger speaker-disjoint evaluation, and the pretrained DeepFilterNet reference are not yet completed.
+
+## Historical Offline Progress (9 October 2026)
+
+The following FIR comparison is retained as previous offline work. It is not a causal low-latency experiment and is not the current research contribution.
 
 [GitHub repository](https://github.com/Simon1ma/elec5305-project-550762913) | [MATLAB code](https://github.com/Simon1ma/elec5305-project-550762913/tree/main/code) | [Detailed results](results/preliminary/)
 

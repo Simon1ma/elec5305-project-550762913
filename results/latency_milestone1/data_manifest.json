@@ -1,0 +1,23 @@
+{
+  "speech_source": "https://doi.org/10.7488/ds/2117",
+  "speech_archive_url": "https://datashare.ed.ac.uk/server/api/core/bitstreams/dec213d3-bf57-4777-9663-c24bdce92d5e/content",
+  "speech_file": "clean_testset_wav/p232_003.wav",
+  "speech_speaker": "p232",
+  "speech_segment_start_seconds": 0,
+  "speech_samples": 344873,
+  "noise_source": "https://zenodo.org/records/1227121",
+  "noise_archive_url": "https://zenodo.org/api/records/1227121/files/DWASHING_48k.zip/content",
+  "noise_archive_md5": "ecf765f12b8d3ada7ef0ec664b8f8d73",
+  "noise_integrity": "ZIP member CRC verified; published whole-archive MD5 recorded but not verified because only channel 1 is fetched",
+  "noise_file": "DWASHING/ch01.wav",
+  "noise_segment_start_seconds": 10,
+  "noise_label": "DEMAND washing-machine recording; not fan or keyboard noise",
+  "sample_rate": 48000,
+  "resampling": "None: both sources are native 48 kHz",
+  "selection_rule": "First lexicographically sorted p232 utterance with duration >=4 s; retain at most 8 s",
+  "role": "Single-utterance engineering/development example; not held-out benchmark evidence",
+  "speech_license": "CC BY 4.0 per the University of Edinburgh dataset End-user Licence",
+  "noise_license": "CC BY-SA 3.0 according to DEMAND dataset description",
+  "clean.wav_sha256": "10cecdfac15b52d355e8f0382dc1bdc8ae41a5dfdfbdd372d972e4e6ff6e2ebf",
+  "noise.wav_sha256": "da365b471bcabda77b3ded7a28700f4c8624bc7a594d876983ee81537a3779ec"
+}
