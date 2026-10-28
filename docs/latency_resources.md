@@ -34,4 +34,12 @@ C. H. Taal, R. C. Hendriks, R. Heusdens, and J. Jensen, "An algorithm for intell
 - [DEMAND](https://zenodo.org/records/1227121): recorded environmental noise. Current recording is DWASHING channel 1; do not relabel it as fan or keyboard noise.
 - [Microsoft DNS Challenge](https://github.com/microsoft/DNS-Challenge): real-time enhancement datasets, synthesis, and evaluation context. Exact challenge/version constraints must be stated before adopting its latency rules.
 
-The intended literature progression is classical spectral estimation, causal/latency-constrained processing, then pretrained low-latency enhancement and multi-metric evaluation. The current milestone establishes only the classical streaming experiment; the modern-reference investigation remains work in progress.
+The intended literature progression is classical spectral estimation, causal/latency-constrained processing, then pretrained low-latency enhancement and multi-metric evaluation. The second revised milestone now includes a measured pretrained reference, but still only one development utterance.
+
+## Second-Milestone Data and Runtime
+
+- [ESC-50, pinned source commit](https://github.com/karolpiczak/ESC-50/tree/33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6): actual keyboard-typing clip `1-137-A-32.wav`. The official LICENSE attributes it to Anton's [keyboard-typing.wav](https://freesound.org/people/Anton/sounds/137/) under CC-BY; the overall ESC-50 distribution is CC BY-NC. The experiment resamples 44.1 kHz to 48 kHz once before creating shared mixtures.
+- [Official DeepFilterNet v0.5.6 release](https://github.com/Rikorose/DeepFilterNet/releases/tag/v0.5.6): Windows x64 Rust/Tract runtime, not a Python whole-file wrapper.
+- [Pinned model and source](https://github.com/Rikorose/DeepFilterNet/tree/978576aa8400552a4ce9730838c635aa30db5e61): DeepFilterNet3 ONNX weights, hop-wise `DfTract::process`, lookahead, delay trimming, PCM16 output, and internal timing path were inspected. Exact URLs and SHA256 hashes are in `results/latency_milestone2/data_and_model_manifest.json`.
+
+The measured reference uses a 20 ms window, 10 ms hop, and two combined lookahead frames. Transport is 30 ms; the common oldest-sample block-ready convention gives 40 ms. A non-silent probe confirms transport, but neither number is a measured device latency. No pretrained-model training or fine-tuning was performed, and pretraining overlap with the development speech has not been independently ruled out.

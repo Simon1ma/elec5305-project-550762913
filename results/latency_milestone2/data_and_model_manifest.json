@@ -1,0 +1,59 @@
+{
+  "keyboard": {
+    "filename": "1-137-A-32.wav",
+    "fold": "1",
+    "target": "32",
+    "category": "keyboard_typing",
+    "esc10": "False",
+    "src_file": "137",
+    "take": "A",
+    "url": "https://raw.githubusercontent.com/karolpiczak/ESC-50/33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6/audio/1-137-A-32.wav",
+    "repository_commit": "33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6",
+    "original_author": "Anton",
+    "original_recording": "keyboard-typing.wav",
+    "original_source_url": "https://freesound.org/people/Anton/sounds/137/",
+    "original_clip_license_label": "CC-BY as listed in the ESC-50 LICENSE",
+    "original_sample_rate": 44100,
+    "sample_rate_after_preparation": 48000,
+    "resampling": "scipy.signal.resample_poly, up=160, down=147, once before creating shared mixtures",
+    "selection": "First filename in lexicographic order labelled keyboard_typing; independent of enhancement output",
+    "license": "ESC-50 CC BY-NC; clip attribution retained locally from the official LICENSE",
+    "source_sha256": "d68e4716f74f073be8f78f5fe8e45daf7c09b0ec0575b21f57989d803536abb3"
+  },
+  "reference": {
+    "version": "deep_filter 0.5.6",
+    "binary_url": "https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-x86_64-pc-windows-msvc.exe",
+    "binary_sha256": "75e11fa16445f560cb6b021521ddb89e89270d13b83089705d98776f58fd7915",
+    "model": "DeepFilterNet3",
+    "model_url": "https://raw.githubusercontent.com/Rikorose/DeepFilterNet/978576aa8400552a4ce9730838c635aa30db5e61/models/DeepFilterNet3_onnx.tar.gz",
+    "model_sha256": "c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616",
+    "source_commit": "978576aa8400552a4ce9730838c635aa30db5e61",
+    "source_urls": {
+      "enhance_wav.rs": "https://raw.githubusercontent.com/Rikorose/DeepFilterNet/978576aa8400552a4ce9730838c635aa30db5e61/libDF/src/bin/enhance_wav.rs",
+      "tract.rs": "https://raw.githubusercontent.com/Rikorose/DeepFilterNet/978576aa8400552a4ce9730838c635aa30db5e61/libDF/src/tract.rs",
+      "wav_utils.rs": "https://raw.githubusercontent.com/Rikorose/DeepFilterNet/978576aa8400552a4ce9730838c635aa30db5e61/libDF/src/wav_utils.rs"
+    },
+    "sample_rate": 48000,
+    "fft_size": 960,
+    "hop_size": 480,
+    "conv_lookahead_frames": 2,
+    "df_lookahead_frames": 2,
+    "combined_lookahead_frames": 2,
+    "documented_transport_shift_samples": 1440,
+    "conservative_oldest_block_ready_delay_ms": 40.0,
+    "output_format": "Official CLI writes 16-bit PCM; this quantisation is included in quality scores",
+    "training": "Official pretrained weights only; no training or fine-tuning"
+  },
+  "experiment": {
+    "speech": "Same VoiceBank p232_003 development utterance, first 4.5 seconds",
+    "noise_types": [
+      "DEMAND washing-machine",
+      "ESC-50 keyboard typing"
+    ],
+    "duration_seconds": 4.5,
+    "prefix_seconds": 0.3,
+    "target_snr_db": 0,
+    "calibration": "Same 300 ms initial noise-only policy for Wiener; reference receives identical input",
+    "limitation": "One development utterance and one recording per noise type, no generalisation claim"
+  }
+}

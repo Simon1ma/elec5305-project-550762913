@@ -2,4 +2,6 @@
 data/local/
 results/latency_milestone1/audio/
 results/latency_milestone1/experiment.mat
+results/latency_milestone2/audio/
+results/latency_milestone2/experiment.mat
 code/latency/__pycache__/

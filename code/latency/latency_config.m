@@ -8,5 +8,6 @@ cfg.calibrationSeconds = 0.3;
 cfg.smoothingSeconds = 0.1;
 cfg.minimumGain = 0.05;
 cfg.bypassGain = false;
+cfg.captureDiagnostics = false;
 assert(mod(cfg.windowLength,2) == 0);
 end

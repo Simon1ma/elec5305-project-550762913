@@ -1,0 +1,11 @@
+{
+  "centre_seconds": 0.70275,
+  "range_seconds": [
+    0.40275,
+    1.00275
+  ],
+  "selection": "Maximum 20 ms mean-square true keyboard noise, excluding the first/last 350 ms; independent of enhancement output",
+  "display_spectrogram": "Common 20 ms Hann, 5 ms hop, FFT 1024 for both enhanced signals",
+  "display_gain": "Native enhancement time/frequency grids, range 0-1",
+  "scope": "One event in the same development clip, not an independent replicate"
+}

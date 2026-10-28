@@ -1,0 +1,12 @@
+{
+  "backend": "Python/matplotlib",
+  "data": "metrics.csv; experiment.mat diagnostics; event_selection.json",
+  "quality_figure": "Two-panel quantitative grid: noise type stratifies the same latency-quality question",
+  "event_figure": "Three-row quantitative/image composite: waveform, common-resolution output spectra, native gains",
+  "replication": "One 4.5 s development utterance; two recordings are conditions, not speech replicates",
+  "uncertainty": "No quality error bars for n=1; seven-repeat timing ranges are in benchmark CSV files",
+  "exclusions": "All four Wiener settings and reference retained for each noise; event crop rule declared separately",
+  "reference_delay": "40 ms from pinned source/config; 30 ms transport verified by an independent near-identity probe",
+  "limits": "No hard real-time or end-to-end device measurement; no neural training; runtime implementation and output precision differ",
+  "style_adaptation": "Typography and method-family colours reused from the earlier project figure; new data mapping and event layout"
+}

@@ -2,7 +2,7 @@
 
 Reviewed: 28 October 2026
 
-Status: final-project second progress submission confirmed. The first revised causal recorded-speech milestone has been implemented and measured. Existing offline results have not been relabelled as causal results. See `results/latency_milestone1/README.md` for the actual experiment and remaining scope.
+Status: final-project second progress submission confirmed. Two revised causal milestones have been measured. The second adds actual keyboard noise, native gain inspection, and an official pretrained DeepFilterNet3 reference with source/configuration and delay probes. Existing offline results have not been relabelled as causal results. See `results/latency_milestone2/README.md` for current evidence and limits; the first milestone is retained separately.
 
 ## Revised Research Focus
 
@@ -10,7 +10,7 @@ Suggested title: **Latency-Quality Trade-offs in Real-Time Causal Speech Enhance
 
 Research question: How does algorithmic latency affect causal STFT-domain speech enhancement, and how does a classical Wiener baseline compare with one pretrained real-time enhancer under documented latency constraints?
 
-The contribution is a controlled latency-quality investigation. Wiener filtering itself is an established baseline, not a new algorithm. The modern reference will be pretrained; no training or fine-tuning is planned.
+The contribution is a controlled latency-quality investigation. Wiener filtering itself is an established baseline, not a new algorithm. The modern reference uses official pretrained weights; no training or fine-tuning was performed.
 
 ## Existing Implementation Audit
 
@@ -77,6 +77,8 @@ The user confirmed the current task is the final project's second progress submi
 
 Do not automatically impose the entire final-project minimum scope on Report 2, or submit a short project-site description in place of an MLX report. Scope and submission format must follow the current Canvas task.
 
-## Work Not Yet Completed
+## Completed and Remaining Work
 
-A causal processor, one recorded-speech mechanical-noise experiment, SI-SDR/STOI scoring, scheduling-delay checks, and RTF measurements are now complete for the first revised milestone. Actual transient keyboard noise, broader evaluation, and pretrained-model streaming comparison remain incomplete. The selected speech utterance is development data and must not later be relabelled as untouched evaluation data.
+A stateful causal processor, recorded mechanical and keyboard noise, SNR/SI-SDR/STOI scoring, scheduling-delay checks, repeated-run RTF, and a pretrained-model streaming reference are complete for one development utterance. The stationary example uses washing-machine rather than fan noise and is labelled accordingly. The keyboard event was selected from true-noise energy, not enhancement results. Model source inspection, a near-identity transport probe, emitted-prefix future invariance, and delay-compensation consistency support the reference's delay interpretation.
+
+Broader speaker/source-disjoint evaluation, multiple SNRs, model-training-overlap checks, per-block deadline distributions, and any microphone/device latency measurement remain incomplete. The selected speech utterance is development data and must not later be relabelled as untouched evaluation data. The reference uses PCM16 output and Rust/Tract while Wiener uses double output and MATLAB; quality and timing limitations are stated explicitly.

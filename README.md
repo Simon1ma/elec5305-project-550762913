@@ -6,11 +6,22 @@
 
 **Progress updated:** 28 October 2026
 
-Following teacher feedback, the research focus is now the latency-quality trade-off of causal enhancement. Wiener filtering is the classical baseline. The first revised milestone implements sequential-block processing and measures quality, output scheduling, and compute cost on one recorded 48 kHz speech/noise mixture.
+Following teacher feedback, the research focus is the latency-quality trade-off of causal enhancement. Wiener filtering is the classical baseline, not a novel algorithm. The second revised milestone adds real keyboard noise, event-level inspection, and an official pretrained DeepFilterNet3 reference to the stateful MATLAB experiment.
 
-[Current causal experiment and measured results](results/latency_milestone1/README.md) | [Run the revised experiment](code/latency/README.md)
+[Current results and limitations](results/latency_milestone2/README.md) | [Run the experiment](code/latency/README.md) | [Brief progress description](docs/project_progress2_working_description.md) | [Earlier causal milestone](results/latency_milestone1/README.md)
 
-Four analysis windows (10/20/40/80 ms) passed reconstruction, future-invariance, arbitrary-chunk, and impulse-shift checks. Output SNRs at 0 dB input are 3.12/2.83/1.92/1.28 dB; STOI values are 0.9273/0.9295/0.9307/0.9330. These are one development utterance, not a held-out benchmark. Latency definitions and all RTF measurements are documented with the results. Transient keyboard noise and a pretrained DeepFilterNet comparison remain future work.
+Both methods receive the same 48 kHz mixtures: 4.5 seconds from one VoiceBank development utterance, either DEMAND washing-machine or ESC-50 keyboard noise at 0 dB SNR, a 300 ms noise-only prefix, and a 100 ms recorded-noise tail. Four Wiener windows (10/20/40/80 ms) are compared. At a comparable 40 ms oldest-sample block-ready delay:
+
+| Noise | Method | Output SNR (dB) | SI-SDR (dB) | STOI |
+| --- | --- | --- | --- | --- |
+| Washing machine | Noisy | 0.00 | -0.02 | 0.9263 |
+| Washing machine | Wiener, 40 ms window | 2.27 | 2.22 | 0.9239 |
+| Washing machine | DeepFilterNet3, 20 ms window | 18.90 | 18.97 | 0.9641 |
+| Keyboard | Noisy | 0.00 | -0.07 | 0.7280 |
+| Keyboard | Wiener, 40 ms window | 2.02 | 1.68 | 0.7020 |
+| Keyboard | DeepFilterNet3, 20 ms window | 12.93 | 12.78 | 0.9092 |
+
+These are measured development examples, not a held-out benchmark. No training or fine-tuning was performed. Source inspection, delay probes, and future-input tests support the reference's streaming interpretation; the quoted delay is not measured microphone-to-speaker latency. Backend and output-precision differences are disclosed in the detailed results. The main next step is broader speaker/source-disjoint evaluation at several SNRs.
 
 ## Historical Offline Progress (9 October 2026)
 
@@ -31,7 +42,7 @@ This project compares a fixed FIR low-pass baseline with STFT-domain Wiener filt
 | FIR | 5.00 | 12.32 | 7.32 |
 | Wiener | 5.00 | 17.04 | 12.04 |
 
-These are measured results for one synthetic example. They do not establish performance on real speech or improved intelligibility. No LibriSpeech or DEMAND experiments have been completed yet.
+These were measured results for one synthetic example as of 9 October. They did not establish performance on real speech or improved intelligibility. Later recorded-speech experiments are documented separately above.
 
 [Detailed results and limitations](results/preliminary/README.md) | [Code and execution instructions](code/README.md) | [Brief progress submission](docs/project_progress_submission.md)
 
@@ -55,6 +66,6 @@ Run `check_preliminary()` for reconstruction, length, gain, prefix-selection, SN
 
 ## Next Work
 
-Collect a small subset of recorded speech from [LibriSpeech](https://www.openslr.org/12/) and environmental noise from [DEMAND](https://zenodo.org/records/1227121). Separate development and evaluation speakers, select parameters on development data, then evaluate fixed settings at 0, 5, and 10 dB. Add segmental SNR and investigate speech distortion and changing-noise failures.
+Expand beyond the current single development utterance. Separate development and evaluation speakers and noise source recordings before segmenting or mixing, freeze settings on development data, then evaluate at 0, 5, and 10 dB. Examine speech distortion, transient-noise failures, and per-block deadlines. Do not reuse this development utterance as untouched evaluation data.
 
 Full source datasets will not be uploaded. Selected file IDs, channels, segment offsets, and seeds will be documented.

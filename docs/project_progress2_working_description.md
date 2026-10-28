@@ -1,13 +1,15 @@
-# Final Project: Second Progress Stage - Working Description
+# Final Project: Second Progress Description
 
-Yixiang Ma | SID 550762913
+Yixiang Ma | SID 550762913 | ELEC5305 | 28 October 2026
 
 Project site: https://simon1ma.github.io/elec5305-project-550762913/
 
-Following feedback, the project now investigates latency-quality trade-offs in causal speech enhancement. Wiener filtering is treated as a classical baseline rather than a novel contribution.
+Detailed results: https://simon1ma.github.io/elec5305-project-550762913/results/latency_milestone2/
 
-The first revised milestone implements a stateful sequential-block MATLAB processor with left-aligned Hann analysis, decision-directed Wiener gains, and overlap-add reconstruction. One recorded 48 kHz VoiceBank utterance is mixed with DEMAND washing-machine noise at 0 dB input SNR. The same mixture is evaluated with 10, 20, 40, and 80 ms windows. Reconstruction, arbitrary-chunk consistency, future-input invariance, impulse transport shift, and output scheduling checks passed.
+Following feedback, my project investigates latency-quality trade-offs in causal speech enhancement. Wiener filtering is an established baseline rather than a new algorithm.
 
-Output SNRs are 3.12, 2.83, 1.92, and 1.28 dB; corresponding STOI values are 0.9273, 0.9295, 0.9307, and 0.9330. The unprocessed STOI is 0.9310, illustrating why SNR improvement alone is insufficient. SI-SDR and repeated-run RTF are also reported. Quality scoring removes only the known transport shift, without lag optimisation or output peak normalisation.
+I implemented a stateful sequential-block MATLAB processor and compared 10, 20, 40, and 80 ms windows. The current development experiment uses 4.5 seconds of one recorded 48 kHz VoiceBank utterance mixed separately with DEMAND washing-machine and ESC-50 keyboard noise at 0 dB SNR. The same inputs, 300 ms noise-only prefix, and 100 ms recorded-noise tail are supplied to every method. Reconstruction, arbitrary-chunk consistency, future-input invariance, transport shift, and output scheduling have been checked.
 
-Delay conventions, the separate 300 ms calibration requirement, timing exclusions, source provenance, code, and limitations are documented. These results concern one development example. Actual keyboard/transient experiments, broader speaker-disjoint evaluation, and a pretrained DeepFilterNet comparison remain incomplete. This working description should be updated as those milestones are completed and checked against the current Canvas instructions before submission.
+I added the official pretrained DeepFilterNet3 reference without training or fine-tuning. Its stateful Rust frame loop and lookahead were inspected. A probe confirmed its 30 ms transport shift; under a common oldest-sample block-ready convention its delay is 40 ms. At that ready delay, the 40 ms Wiener branch achieves keyboard SNR 2.02 dB and STOI 0.7020, compared with DeepFilterNet3's 12.93 dB and 0.9092. Noisy keyboard STOI is 0.7280, showing that Wiener SNR improvement alone does not establish an intelligibility benefit. Event-level waveforms, spectrograms, and gains help inspect this failure case.
+
+The site includes SNR, SI-SDR, STOI, repeated-run RTF, source provenance, checks, and runnable code. It distinguishes algorithmic delay from compute/device latency and discloses backend and output-precision differences. Results concern one development utterance, not held-out generalisation. More speakers, source-disjoint evaluation, multiple SNRs, and per-block deadline measurements remain next steps.

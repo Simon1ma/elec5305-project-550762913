@@ -27,7 +27,7 @@ classdef CausalWiener < handle
             obj.previousPower = zeros(cfg.fftLength,1);
         end
 
-        function [output, schedule] = step(obj, arrived)
+        function [output, schedule, gains] = step(obj, arrived)
             validateattributes(arrived,{'double'},{'column','real','finite'});
             obj.pending = [obj.pending; arrived];
             H = obj.cfg.hopLength; L = obj.cfg.windowLength;
@@ -35,6 +35,12 @@ classdef CausalWiener < handle
             output = zeros(count*H,1);
             % Columns: input samples consumed, logical block start (zero-based).
             schedule = zeros(count,2);
+            capture = isfield(obj.cfg,'captureDiagnostics') && obj.cfg.captureDiagnostics;
+            if capture
+                gains = zeros(obj.cfg.fftLength/2+1,count);
+            else
+                gains = zeros(0,0);
+            end
             for block = 1:count
                 incoming = obj.pending(1:H);
                 obj.pending(1:H) = [];
@@ -63,6 +69,7 @@ classdef CausalWiener < handle
                     gain = max(obj.cfg.minimumGain,prior./(1+prior));
                 end
                 obj.previousPower = gain.^2.*power;
+                if capture, gains(:,block) = gain(1:obj.cfg.fftLength/2+1); end
                 timeFrame = real(ifft(gain.*Y,obj.cfg.fftLength));
                 obj.overlap = obj.overlap+timeFrame(1:L);
                 obj.overlapWeight = obj.overlapWeight+obj.window;

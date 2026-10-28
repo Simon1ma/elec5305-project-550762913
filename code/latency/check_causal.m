@@ -1,7 +1,7 @@
 function checks = check_causal()
 rng(123,'twister');
 windows = [10 20 40 80];
-reconstruction = zeros(4,1); chunkError = zeros(4,1);
+reconstruction = zeros(4,1); chunkError = zeros(4,1); enhancedChunkError = zeros(4,1);
 futureError = zeros(4,1); impulseShift = zeros(4,1);
 delayMs = zeros(4,1);
 for k = 1:numel(windows)
@@ -22,14 +22,16 @@ for k = 1:numel(windows)
     cfg.bypassGain = false;
     future = x; cutoff = 33600;
     future(cutoff+1:end) = 10*randn(numel(x)-cutoff,1);
-    [~,a] = run_causal_stream(x,cfg);
+    [enhanced,a] = run_causal_stream(x,cfg);
+    enhancedIrregular = run_causal_stream(x,cfg,[137 1 997 48 1703]);
+    enhancedChunkError(k) = max(abs(enhancedIrregular-enhanced));
     [~,b] = run_causal_stream(future,cfg);
     emittedBeforeChange = floor(cutoff/cfg.hopLength)*cfg.hopLength;
     futureError(k) = max(abs(a.raw(1:emittedBeforeChange)-b.raw(1:emittedBeforeChange)));
-    assert(reconstruction(k)<1e-10 && chunkError(k)<1e-10 && futureError(k)==0);
+    assert(reconstruction(k)<1e-10 && chunkError(k)<1e-10 && enhancedChunkError(k)<1e-10 && futureError(k)==0);
 end
-checks = table(windows.',reconstruction,chunkError,futureError,impulseShift,delayMs, ...
-    'VariableNames',{'Window_ms','ReconstructionRelativeError','ChunkingMaxError', ...
+checks = table(windows.',reconstruction,chunkError,enhancedChunkError,futureError,impulseShift,delayMs, ...
+    'VariableNames',{'Window_ms','ReconstructionRelativeError','ChunkingMaxError','EnhancedChunkingMaxError', ...
     'FuturePerturbationMaxError','MeasuredTransportShift_samples','OldestSampleReadyDelay_ms'});
 root = fileparts(fileparts(fileparts(mfilename('fullpath'))));
 out = fullfile(root,'results','latency_milestone1');

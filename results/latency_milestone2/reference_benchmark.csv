@@ -1,0 +1,3 @@
+Noise,Method,TransportShift_ms,OldestSampleReadyDelay_ms,DelayEvidence,RTF_median,RTF_min,RTF_max,Repeats,Timing,RTF_values
+washing,DeepFilterNet3,30.0,40.0,Source/config derived block-ready delay; transport independently probed,0.2113433,0.20187345,0.27746433,7,Official internal frame-loop timer; excludes setup and file I/O,"[0.27746433, 0.2514629, 0.22099838, 0.20592125, 0.20187345, 0.20620666, 0.2113433]"
+keyboard,DeepFilterNet3,30.0,40.0,Source/config derived block-ready delay; transport independently probed,0.20884153,0.20056899,0.24099535,7,Official internal frame-loop timer; excludes setup and file I/O,"[0.21156928, 0.20056899, 0.24099535, 0.22088164, 0.20191902, 0.20443667, 0.20884153]"

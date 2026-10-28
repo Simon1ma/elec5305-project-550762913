@@ -1,5 +1,5 @@
-Window_ms,ReconstructionRelativeError,ChunkingMaxError,FuturePerturbationMaxError,MeasuredTransportShift_samples,OldestSampleReadyDelay_ms
-10,2.58738153766763e-16,0,0,240,10
-20,2.73182096889209e-16,0,0,480,20
-40,2.85827186507003e-16,0,0,960,40
-80,2.97491192403318e-16,0,0,1920,80
+Window_ms,ReconstructionRelativeError,ChunkingMaxError,EnhancedChunkingMaxError,FuturePerturbationMaxError,MeasuredTransportShift_samples,OldestSampleReadyDelay_ms
+10,2.58738153766763e-16,0,0,0,240,10
+20,2.73182096889209e-16,0,0,0,480,20
+40,2.85827186507003e-16,0,0,0,960,40
+80,2.97491192403318e-16,0,0,0,1920,80
