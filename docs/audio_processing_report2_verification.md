@@ -38,6 +38,7 @@ No blocking omission was found in the checked Report 2 package. This is a techni
 - `check_report2()` additionally passed three non-frame-aligned signal lengths, odd/even modulation grids, finite-output checks, and mask bounds.
 - Reproduced non-baseline metrics agreed with the original values exactly. Bypass SNR remained above 280 dB; small floating-point variations there are not physical enhancement gains.
 - The final 11-page PDF was rendered and inspected; no clipping or overlapping plot labels was observed.
+- A prose-only revision shortened the report's text from 1,778 to 1,626 words across 18 paragraphs. Structure, executable blocks, input audio, helpers, all seven equations, citations, references, and saved numerical outputs were checked against commit `038c1d4` and retained. The revised ZIP was tested again independently.
 
 ## Comparison with the Samples
 
@@ -47,7 +48,7 @@ The experiment is deliberately narrower than the broad samples: it tests one rec
 
 ## Remaining Limitations and Optional Polish
 
-- The Methodology prose is approximately 448 words, including equation explanations, above the indicative 150-300 range. The instructions explicitly state there is no strict overall word limit. Tightening this section would improve concision but is not a missing mandatory component.
+- The Methodology prose is approximately 359 words, including equation explanations and the diagram caption, reduced from 448 words. This is still above the indicative 150-300 range. The instructions explicitly state there is no strict overall word limit; retaining parameter and symbol definitions avoids making the shorter text ambiguous.
 - Native Live Editor pagination splits some captions/text and leaves the last two references on page 11. The figures and formulas are intact; an exact sample page count is not specified.
 - Results concern one public development utterance and offline processing. They do not establish generalisation, denoising improvement, real-time operation, or human intelligibility.
 - The student should review and understand the submitted method and conclusions. Optional listening was not used as experimental evidence.
@@ -56,6 +57,6 @@ The experiment is deliberately narrower than the broad samples: it tests one rec
 
 [Download the ZIP](<../submissions/Report2 YixiangMa.zip>) | [View the PDF](<../Report2 YixiangMa/Report2 YixiangMa.pdf>) | [Live Script and sources](<../Report2 YixiangMa/>)
 
-- Size: 4,125,473 bytes.
-- SHA256: `f550fb17cacde783f58606af32d7ab9bfc7e1b8d69b3e86101746763e4bc2f2b`.
+- Size: 4,124,185 bytes.
+- SHA256: `a48fdcf6a08d6d0efe1630ece103561c43ceee046607c29b2dbbc12a1b48ca09`.
 - Regenerable MAT files, listening outputs, temporary logs, and unrelated Report 1/Final Project changes are not part of this submission package.

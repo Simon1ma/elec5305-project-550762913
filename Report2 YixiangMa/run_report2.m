@@ -18,41 +18,41 @@ assert(exist('cwt','file')==2, 'Wavelet Toolbox is required.');
 
 %% 2.2 Objective
 
-% This report investigates how restricting temporal modulations changes a recorded speech signal. A two-dimensional Fourier transform of a log-magnitude spectrogram is used to apply 4, 8, and 16 Hz temporal low-pass (LP) masks. The experiment checks reconstruction, measures waveform and envelope fidelity, and uses the continuous wavelet transform to inspect local time-frequency changes. Unlike Report 1's synthetic-signal finite impulse response (FIR) noise reduction, the aim here is to analyse speech dynamics, not to demonstrate denoising or claim improved intelligibility.
+% This report examines how restricting temporal modulation changes recorded speech. It compares 4, 8, and 16 Hz temporal low-pass (LP) masks applied through a two-dimensional Fourier transform of the log-magnitude spectrogram. Reconstruction is checked before comparing waveform and envelope fidelity. Continuous wavelet analysis adds a local time-frequency view. Unlike Report 1's synthetic-signal finite impulse response (FIR) noise reduction, this experiment concerns speech dynamics. It does not test denoising or improved intelligibility.
 
 %% 2.3 Background
 
-% The short-time Fourier transform (STFT) describes how acoustic frequency content evolves. Its window length controls the time-frequency trade-off, while its hop determines the sampling rate of the spectrogram's time axis. A second Fourier transform across the spectrogram reveals temporal modulation in hertz and spectral modulation in cycles per kilohertz [1,3,4]. These modulation frequencies describe changes in a spectral pattern, not the acoustic frequencies of the speech waveform.
+% The short-time Fourier transform (STFT) tracks acoustic frequency content over time. Window length sets the time-frequency trade-off, and the hop sets the spectrogram's temporal sampling rate. A second Fourier transform across the spectrogram reveals temporal modulation in hertz and spectral modulation in cycles per kilohertz [1,3,4]. These axes describe changes in spectral patterns, not the waveform's acoustic frequencies.
 
-% Speech-modulation studies motivate examining low temporal rates, but acoustic similarity alone does not establish intelligibility [3]. Here, filtering is applied to the log magnitude while the original STFT phase is retained. An arbitrary modified magnitude and the retained phase need not form a consistent STFT of any waveform. Reanalysis therefore provides a useful consistency check.
+% Speech-modulation studies motivate the choice of low temporal rates, but acoustic similarity alone does not establish intelligibility [3]. The present experiment filters log magnitude and retains the original STFT phase. That combination need not be a consistent STFT of any waveform. Comparing the target with the reconstructed waveform's STFT measures this mismatch.
 
-% The continuous wavelet transform (CWT) provides a complementary, scale-dependent view: high-frequency wavelets are shorter in time than low-frequency wavelets. MATLAB's analytic Morlet wavelet and L1 normalisation are used [2,5]. The cone of influence (COI) identifies boundary-sensitive coefficients, which are excluded from the displayed scalograms [6].
+% The continuous wavelet transform (CWT) offers a scale-dependent comparison with the STFT. High-frequency wavelets are shorter in time than low-frequency wavelets. The analysis uses MATLAB's analytic Morlet wavelet with L1 normalisation [2,5]. Coefficients affected by the signal boundaries, as identified by the cone of influence (COI), are excluded from the displayed scalograms [6].
 
 %% 2.4 Methodology and Implementation
 
-% The input is the unchanged clean VoiceBank utterance p232_003.wav from the Edinburgh dataset [7], not a personal recording. MATLAB resample converts its native 48 kHz rate to 16 kHz with anti-alias filtering [8]. The mean is removed and the input peak is scaled once to 0.8. Every condition uses this same reference. A 512-sample periodic Hann window, 128-sample hop, and 512-point fast Fourier transform (FFT) correspond to 32 ms, 8 ms, and a 125 Hz frame rate.
+% VoiceBank utterance p232_003.wav from Edinburgh [7] is an unchanged clean public recording, not a personal recording. MATLAB resample converts 48 kHz to 16 kHz with anti-alias filtering [8]. After mean removal and peak scaling to 0.8, every condition uses a 512-sample periodic Hann window (32 ms), a 128-sample hop (8 ms; 125 Hz frame rate), and a 512-point fast Fourier transform (FFT).
 
-% Log magnitudes are floored 120 dB below the maximum STFT magnitude. Before modulation filtering, 63 neighbouring frames are reflected at each time boundary (about 0.5 s). The even temporal mask is unity up to 0.8 times its stop frequency, has a raised-cosine transition, and is zero at and above 4, 8, or 16 Hz. Spectral modulation is not filtered. Symmetric masks preserve real-valued log magnitudes. Inverse transforms, original-phase reuse, and squared-window overlap normalisation reconstruct equal-length outputs. The bypass uses the original complex STFT, avoiding the log floor.
+% Log magnitudes are floored 120 dB below their maximum. Reflection adds 63 neighbouring frames (about 0.5 s) per boundary. Even temporal masks pass rates up to 0.8 times their stop frequency, taper with a raised cosine, and reach zero at 4, 8, or 16 Hz. Spectral modulation is unchanged. The masks preserve real log magnitudes; original-phase synthesis uses squared-window overlap normalisation. Bypass reconstruction uses the original complex STFT without the log floor. Outputs have equal length.
 
-% A known 4/16 Hz log-spectrogram calibration tests the mask before interpreting speech. Fidelity is scored from 0.5 s to 0.5 s before the utterance ends. Reference-to-error signal-to-noise ratio (SNR), 20 ms root-mean-square (RMS) envelope correlation, log-spectrum root-mean-square error (RMSE), and STFT consistency error are reported. No output gain fitting or delay search is used. One common attenuation is applied only to listening WAV files. For CWT inspection, an 800 ms interval is selected by the largest reference RMS-envelope change outside 0.7 s margins. This is an offline demonstration on one utterance, not a listening study or a causal system.
+% A 4/16 Hz log-spectrogram calibration checks the masks. Fidelity excludes the first and last 0.5 s. Measures include reference-to-error signal-to-noise ratio (SNR), 20 ms root-mean-square (RMS) envelope correlation, log-spectrum root-mean-square error (RMSE), and STFT consistency. No output gain fitting or delay search is used. Listening WAV files alone share one attenuation. CWT uses an 800 ms event centred on the largest reference RMS-envelope change outside 0.7 s margins. This one-utterance experiment is offline, not a listening study or causal system.
 
-% The main operations are defined below. Here n is a sample index, k is an acoustic-frequency bin, m is a frame, L is window length, H is hop, N is FFT length, and w is the Hann window.
+% The equations use sample index n, acoustic-frequency bin k, frame m, window length L, hop H, FFT length N, and Hann window w.
 
 % S[k,m]=\sum_{n=0}^{L-1}x[n+mH]w[n]e^{-j2\pi kn/N}
 
-% A is the floored log-magnitude spectrogram. M is its two-dimensional transform, with F frequency rows and T time columns. Temporal and spectral modulation axes follow the sampling intervals, not the audio FFT axis.
+% A denotes floored log magnitude; M its two-dimensional transform, with F frequency rows and T time columns. Modulation axes follow the spectrogram sampling intervals, not the audio FFT axis.
 
 % A[k,m]=20\log_{10}(\max(|S[k,m]|,\epsilon)),\qquad M=\mathrm{FFT2}(A_{\mathrm{pad}})
 
 % f_t(v)=v\frac{f_s}{HT},\qquad \nu_s(u)=u\frac{1000}{F\Delta f},\qquad \Delta f=\frac{f_s}{N}
 
-% With an even temporal mask B, the inverse two-dimensional FFT (IFFT2) is followed by cropping the reflected frames. The original phase is then restored. Display-only modulation maps additionally remove row means and apply a separable Hann taper; that display preprocessing is not used for filtering or inversion.
+% After applying the even mask B, the inverse two-dimensional FFT (IFFT2) is followed by cropping and phase restoration. Only display maps use row-mean removal and separable Hann tapering, not filtering or inversion.
 
 % \widetilde{A}=\mathrm{Re}\{\mathrm{IFFT2}(B\odot M)\},\qquad \widetilde{S}=10^{\widetilde{A}/20}e^{j\arg S}
 
 % \widehat{x}[n]=\frac{\sum_m w[n-mH]\widetilde{s}_m[n-mH]}{\sum_m w^2[n-mH]}
 
-% The denominator is used only where positive; padding keeps every retained speech sample covered. The L1-normalised CWT uses scale a, time shift b, and the conjugate Morlet wavelet. Waveform SNR below measures distortion against clean speech, not removal of added noise.
+% Padding keeps overlap weights positive over retained samples. The L1-normalised CWT uses scale a, shift b, and the conjugate Morlet wavelet. SNR measures waveform distortion against clean speech, not noise removal.
 
 % W_x(a,b)=\frac{1}{a}\int x(t)\psi^*\!\left(\frac{t-b}{a}\right)dt
 
@@ -77,7 +77,7 @@ R = r2_analyse(x,fs);
 fprintf('Duration: %.6f s; sample rate: %d Hz\n',numel(x)/fs,fs);
 fprintf('Score interval: %.3f to %.3f s\n',R.scoreRangeSeconds);
 
-% r2_stft and r2_istft contain the padded analysis/synthesis pair. r2_modfilter implements the reflected extension and temporal mask. r2_analyse applies the same settings to every condition and computes all metrics. No downloaded resources or external project paths are accessed during execution.
+% r2_stft and r2_istft implement padded analysis and synthesis. r2_modfilter applies reflection and the temporal mask. r2_analyse computes every condition and its metrics with shared settings. Execution uses only the submitted files and MATLAB toolboxes.
 
 %% 2.5.2 Reconstruction and modulation calibration
 
@@ -100,7 +100,7 @@ r2_plot(R,4);
 
 % Figure 4. Temporal mask responses and retained target dynamic-modulation energy. All coefficients with zero temporal modulation are excluded from this energy ratio, preventing static spectral structure from dominating the measure. The 4, 8, and 16 Hz masks retain 66.42%, 84.04%, and 92.28%, respectively. This is a target-spectrogram quantity, not a direct measurement of the reconstructed waveform's modulation energy.
 
-% The following executable block exposes the central operation for the 8 Hz condition. The helper applies the same operation to all settings. Reflection reduces the artificial boundary join but does not make the global FFT filter causal or eliminate all edge effects.
+% The block below shows the 8 Hz calculation; the helper repeats it for each setting. Reflection reduces the artificial boundary join, but edge effects remain. The global FFT filter is still noncausal.
 
 A = R.logMagnitude;
 p = R.details{3}.paddingFrames;
@@ -142,17 +142,17 @@ r2_save(R,reportFolder);
 
 %% 2.6 Discussion
 
-% Reducing the temporal cutoff removed rapid changes in the log spectrogram and reduced similarity to the original speech. The 16 Hz condition retained more dynamic-modulation energy and had higher envelope correlation than the 4 Hz condition. This direction agrees with the nested masks: increasing the cutoff preserves additional modulation coefficients. It does not demonstrate that 16 Hz is an optimal speech-processing setting, because the objective here was fidelity rather than a competing noise-removal benefit.
+% Lower temporal cutoffs removed faster changes and reduced similarity to the original speech (Table 1). The 16 Hz condition retained more target dynamic-modulation energy and had higher envelope correlation than the 4 Hz condition. This follows the nested masks: a larger cutoff preserves additional coefficients. It does not make 16 Hz an optimal setting. The experiment measured fidelity without testing a competing noise-removal benefit.
 
-% The distinction between modulation frequency and acoustic frequency is important. A 4 Hz temporal mask smooths changes in many acoustic-frequency channels; it does not restrict the audio waveform to frequencies below 4 Hz. The complementary CWT view retains a frequency-dependent temporal scale rather than the STFT's fixed window. Its boundary-sensitive regions were masked to avoid treating edge effects as speech events.
+% A 4 Hz temporal mask smooths changes across acoustic-frequency channels; it does not limit the audio waveform to frequencies below 4 Hz. The spectrograms in Figure 5 help distinguish these effects. CWT offers a different temporal scale at each frequency, whereas STFT uses a fixed window. Masking boundary-sensitive CWT coefficients avoids interpreting edge effects as speech events.
 
-% Reusing the original phase introduced a measurable limitation. The modified target spectrograms were not exactly consistent with their reconstructed waveforms: relative complex-STFT errors ranged from 0.160 to 0.253. Thus, the target energy-retention percentages cannot be read as exact waveform modulation retention. An iterative consistency reconstruction could be tested separately, but was not applied here.
+% Original-phase reconstruction did not reproduce the modified target spectrograms exactly. Relative complex-STFT errors ranged from 0.160 to 0.253, so target energy-retention percentages are not exact measures of waveform modulation retention. An iterative consistency reconstruction is one possible next test, but was not used here.
 
-% The strongest checks are the near-exact bypass and known-component calibration, which distinguish deliberate modification from transform errors. Reflection and central-interval scoring reduce boundary sensitivity without removing the offline, global nature of filtering. Finally, only one utterance was examined. The speech-perception literature motivates the analysis [3], but neither the reported SNR nor envelope correlation establishes word recognition or listening quality. A controlled listening task would be needed for that conclusion.
+% The near-exact bypass and known-component calibration help separate intentional filtering from transform errors (Figure 2). Reflection and central-interval scoring reduce boundary sensitivity, but filtering remains offline and global. Only one utterance was examined. The speech-perception literature motivates the analysis [3]; SNR and envelope correlation cannot establish word recognition or listening quality. Those questions require a controlled listening task.
 
 %% 2.7 Conclusion
 
-% This report implemented a reproducible MATLAB analysis of temporal modulation filtering in recorded speech. The pipeline connected STFT analysis, a two-dimensional modulation transform, controlled masks, overlap-add synthesis, and complementary CWT inspection. Reconstruction and known-component tests confirmed the transform and mask operations before the speech results were interpreted. Lower cutoffs retained less target dynamic energy and produced larger waveform and log-spectrum errors in the tested utterance. Original-phase reuse also produced nonzero STFT inconsistency, limiting how literally the ideal target can describe the output. The objective of demonstrating these representation and reconstruction trade-offs was met within this single-utterance offline experiment. No noise-reduction, real-time, or human-intelligibility improvement is claimed.
+% The MATLAB experiment linked STFT analysis, a two-dimensional modulation transform, controlled masks, overlap-add synthesis, and CWT inspection in a reproducible report. Reconstruction and known-component tests checked the transforms before the speech results were interpreted. In this utterance, lower cutoffs retained less target dynamic energy and increased waveform and log-spectrum errors. The modified target and original phase also gave nonzero STFT inconsistency, so the ideal spectrogram did not fully describe the reconstructed output. The analysis therefore shows both the effect of restricting temporal modulation and the limits of this reconstruction approach. Its findings concern one offline recording, with no claim of noise-reduction, real-time, or human-intelligibility improvement.
 
 %% 2.8 References
 
