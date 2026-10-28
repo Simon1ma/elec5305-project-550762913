@@ -5,3 +5,6 @@ results/latency_milestone1/experiment.mat
 results/latency_milestone2/audio/
 results/latency_milestone2/experiment.mat
 code/latency/__pycache__/
+
+# Regenerable Report 2 analysis, figures, and listening clips.
+/Report2 YixiangMa/generated/

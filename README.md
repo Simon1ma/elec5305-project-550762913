@@ -64,6 +64,16 @@ Run `check_preliminary()` for reconstruction, length, gain, prefix-selection, SN
 - `docs/`: progress submission description.
 - `index.md`: GitHub Pages project overview.
 
+## Separate Coursework: Audio Processing Report 2
+
+**Temporal Modulation Filtering and Wavelet Analysis of Recorded Speech**
+
+This is an independent MATLAB Live Script report, not the Final Project final submission. It examines 4/8/16 Hz temporal modulation masks, reconstruction fidelity, and continuous wavelet analysis of one recorded speech utterance.
+
+[Report folder](<Report2 YixiangMa/>) | [PDF](<Report2 YixiangMa/Report2 YixiangMa.pdf>) | [MATLAB Live Script](<Report2 YixiangMa/Report2 YixiangMa.mlx>) | [Submission ZIP](<submissions/Report2 YixiangMa.zip>) | [Verification](docs/audio_processing_report2_verification.md)
+
+MATLAB R2026a Update 5 with Signal Processing Toolbox and Wavelet Toolbox was tested. Extract the ZIP, set MATLAB's Current Folder to `Report2 YixiangMa`, open the Live Script, and run all sections. The input audio, source attribution, licence, and custom helpers are included. Generated outputs are recreated locally rather than committed.
+
 ## Next Work
 
 Expand beyond the current single development utterance. Separate development and evaluation speakers and noise source recordings before segmenting or mixing, freeze settings on development data, then evaluate at 0, 5, and 10 dB. Examine speech distortion, transient-noise failures, and per-block deadlines. Do not reuse this development utterance as untouched evaluation data.

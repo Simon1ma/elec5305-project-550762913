@@ -1,0 +1,19 @@
+INPUT RECORDING
+Local filename: voicebank_p232_003.wav
+Archive member: clean_testset_wav/p232_003.wav
+Source: clean_testset_wav.zip, University of Edinburgh DataShare
+Dataset DOI: https://doi.org/10.7488/ds/2117
+Record: https://datashare.ed.ac.uk/items/6ed35425-bf14-4d2b-93a1-0a4984952757
+Creator: Cassia Valentini-Botinhao
+Dataset citation: Noisy speech database for training speech enhancement
+algorithms and TTS models, 2016 [sound]. University of Edinburgh, 2017.
+Original sample rate: 48000 Hz, mono
+Retained file SHA256: 10cecdfac15b52d355e8f0382dc1bdc8ae41a5dfdfbdd372d972e4e6ff6e2ebf
+Licence: CC BY 4.0, per the official dataset End-user Licence
+Licence URL: https://creativecommons.org/licenses/by/4.0/
+
+The submitted input is the unchanged clean utterance. Processing in the
+Live Script converts 48 kHz to 16 kHz with MATLAB resample (anti-alias filter),
+removes the mean, and applies one initial peak scaling to 0.8. Output audio
+files are modified derivatives and retain this attribution. No source text,
+speaker identity, or consent beyond the dataset's published terms is inferred.
