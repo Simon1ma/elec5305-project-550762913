@@ -1,0 +1,21 @@
+{
+  "sample_rate": 48000,
+  "speech_seconds": 4.5,
+  "calibration_seconds": 0.3,
+  "recorded_noise_tail_seconds": 0.1,
+  "full_input_seconds": 4.9,
+  "common_input_attenuation": 0.4011164300853715,
+  "maximum_input_amplitude": 0.800000011920929,
+  "input_quantisation": "Shared float32 WAV inputs for MATLAB and official DeepFilterNet CLI",
+  "reference_speech_quantisation": "Double-precision scaled clean reference; no per-output peak normalisation",
+  "noise_tail": "100 ms of the same actual recording, added after speech to drain delayed output; no loop or artificial keyboard join",
+  "deepfilter_silence_skip_threshold_power": 1e-07,
+  "blocks_below_reference_silence_threshold": {
+    "washing": 0,
+    "keyboard": 0
+  },
+  "files": {
+    "washing_input.wav": "4c47c0991417bec8364d1172c8e4917a59621f35a3e1ebe8a63e602252a5c226",
+    "keyboard_input.wav": "0479d7ffb816aa484a5ad407089ce149d28b3da85ba8bdfc88ccb2afcf07451b"
+  }
+}

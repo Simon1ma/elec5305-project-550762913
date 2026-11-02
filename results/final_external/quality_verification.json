@@ -1,0 +1,14 @@
+{
+  "cases": 144,
+  "metric_rows": 864,
+  "speaker_clusters": 6,
+  "shared_wav_mat_arrays_equal": true,
+  "input_snr_max_abs_error": 1.3788129749059408e-08,
+  "resampling_unit": "Speaker; 2000 replicates, conditional on the four noise recordings",
+  "bootstrap_seed": 5305,
+  "upstream_pretraining_overlap": "Not independently ruled out",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "platform": "Windows-11-10.0.26200-SP0"
+}

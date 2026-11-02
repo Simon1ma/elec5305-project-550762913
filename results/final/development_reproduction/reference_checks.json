@@ -1,0 +1,12 @@
+{
+  "documented_transport_samples": 1440,
+  "probe_measured_transport_samples": 1440,
+  "probe_relative_error_including_pcm16": 0.0004602239039490317,
+  "future_perturbation_cutoff_samples": 96000,
+  "future_invariance_max_error": 0.0,
+  "cli_compensate_delay_matches_exact_shift": true,
+  "repeat_output_bit_identical": true,
+  "pcm16_output_clipping_detected": false,
+  "causality_evidence": "Source inspection of DfTract::process hop loop plus emitted-prefix invariance",
+  "block_ready_delay_evidence": "Frame schedule derived from source/config and confirmed transport; not hardware latency measurement"
+}

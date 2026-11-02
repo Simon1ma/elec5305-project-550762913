@@ -1,0 +1,3 @@
+CaseID,Noise,Method,OldestSampleReadyDelay_ms,RTF_median,RTF_min,RTF_max,Repeats
+1089-134686-0000__washing_machine_21896__snr0,washing_machine,DeepFilterNet3,40,0.06661469,0.06487,0.06815996,7
+1089-134686-0000__keyboard_typing_53501__snr0,keyboard_typing,DeepFilterNet3,40,0.062763736,0.062182914,0.0649973,7

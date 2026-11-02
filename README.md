@@ -4,7 +4,34 @@
 
 **Project site:** https://simon1ma.github.io/elec5305-project-550762913/
 
-**Progress updated:** 28 October 2026
+**Final research project prepared:** 2 November 2026
+
+The final experiment preserves the stateful causal Wiener implementation and
+official DeepFilterNet3 reference developed after teacher feedback. It evaluates
+10/20/40/80 ms Wiener windows on two separate 144-mixture cohorts. The primary
+external cohort uses LibriSpeech test-clean speech and recorded washing-machine
+and keyboard noise at 0/5/10 dB. A native-48-kHz VCTK-derived cohort is retained
+as a secondary engineering comparison because the reference paper mentions
+VCTK in training. Neither cohort is claimed to be fully verified independent
+of upstream model training.
+
+**Final deliverables:** [10-page research report](output/pdf/Final_Project_Yixiang_Ma.pdf)
+| [94-second code and audio demonstration](submissions/Final_Project_Demo.mp4)
+| [Runnable final code and setup](code/final/README.md)
+| [Primary external results](results/final_external/README.md)
+| [Secondary engineering results](results/final/README.md)
+| [Source attributions](docs/final_data_attribution.md).
+
+On the external 0 dB keyboard mixtures, the noisy/Wiener40/DeepFilterNet3 mean
+STOI scores are 0.7336/0.6953/0.8998. Wiener40 increases waveform SNR to
+2.13 dB while reducing STOI. At matched 40 ms oldest-sample block-ready delay,
+DeepFilterNet3 obtains 13.55 dB SNR and 0.8998 STOI. These are speaker means,
+not a live device-latency test. Full 864-row metrics, speaker bootstrap intervals,
+causality evidence, timing distributions, limits and source identifiers are
+provided with the code. The demo app reruns the chosen processor and plays the
+clean, noisy and processed signals at one common gain.
+
+## Earlier causal development (28 October 2026)
 
 Following teacher feedback, the research focus is the latency-quality trade-off of causal enhancement. Wiener filtering is the classical baseline, not a novel algorithm. The second revised milestone adds real keyboard noise, event-level inspection, and an official pretrained DeepFilterNet3 reference to the stateful MATLAB experiment.
 

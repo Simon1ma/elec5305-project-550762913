@@ -1,0 +1,10 @@
+{
+  "case_id": "1089-134686-0000__keyboard_typing_53501__snr0",
+  "event_centre_s": 1.52,
+  "interval_s": [
+    1.32,
+    1.72
+  ],
+  "selection": "Maximum 20 ms true-noise energy, 10 ms grid, excluding 300 ms speech boundaries; no enhancement outcomes used.",
+  "display_stft": "20 ms periodic Hann, 5 ms display hop, FFT1024; gain grids remain native."
+}

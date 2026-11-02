@@ -1,0 +1,5 @@
+Method,EventSNR_dB
+Noisy,-6.661651670161916
+Wiener 10 ms,-4.991045438912718
+Wiener 80 ms,-4.807410847192221
+DeepFilterNet3 (40 ms ready),11.309253959478088

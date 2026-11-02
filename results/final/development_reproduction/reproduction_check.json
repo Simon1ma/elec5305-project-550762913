@@ -1,0 +1,6 @@
+{
+  "quality_max_abs_difference_from_previous_milestone": 3.8191672047105385e-14,
+  "reference_delay_and_future_checks": "PASS",
+  "causal_unit_and_schedule_checks": "PASS",
+  "timings": "New machine reproduction timings; not replacement for the historical measurements"
+}

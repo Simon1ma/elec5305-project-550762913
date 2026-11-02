@@ -1,0 +1,13 @@
+{
+  "cases": 144,
+  "quality_rows": 864,
+  "reconstruction_max_relative_error": 2.98394556797564e-16,
+  "reference_full_scale_flags": 0,
+  "ten_ms_input_blocks_below_reference_silence_power_threshold": 945,
+  "silence_threshold_note": "Input power <1e-7 flags possible official silence branch; internal model branch decisions are not logged.",
+  "profiled_step_calls": 25718,
+  "over_hop_budget_calls": 0,
+  "profiled_calls_note": "Includes calibration calls and timer/validation overhead; excludes EOF flush. Not a hard real-time guarantee.",
+  "cpu": "Intel Core i7-14700HX (20 cores, 28 logical processors)",
+  "platform": "Windows-11-10.0.26200-SP0"
+}

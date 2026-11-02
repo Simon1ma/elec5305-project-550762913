@@ -1,0 +1,18 @@
+{
+  "case": {
+    "case_id": "1089-134686-0000__washing_machine_21896__snr0",
+    "speaker": "1089",
+    "speech_id": "1089-134686-0000",
+    "noise_class": "washing_machine",
+    "noise_source": "21896",
+    "noise_file": "1-21896-A-35.wav",
+    "input_snr_db": 0,
+    "actual_input_snr_db": -1.903437769860377e-11,
+    "input_wav": "data/local/final_external/cases/1089-134686-0000__washing_machine_21896__snr0.wav",
+    "input_mat": "data/local/final_external/cases/1089-134686-0000__washing_machine_21896__snr0.mat",
+    "shared_input_sha256": "f57b8ac87ebed3f787b9d6e895a607f5b9505e68d52201de5f3210c21df12ca4",
+    "blocks_below_reference_silence_threshold": 0
+  },
+  "selection": "First manifest case, fixed before evaluation outcomes; not best-performing case.",
+  "common_playback_attenuation": 0.95
+}

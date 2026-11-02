@@ -1,0 +1,159 @@
+{
+  "case_id": "1089-134686-0000__keyboard_typing_53501__snr0",
+  "selection": "First external utterance, first keyboard source at 0 dB; not selected by scores.",
+  "duration_seconds": 94,
+  "video_style": "Captioned walkthrough using actual MATLAB app exports after processor reruns; no simulated live cursor or microphone capture.",
+  "common_audio_gain": 0.95,
+  "sample_rate": 48000,
+  "listening_order": [
+    "Clean",
+    "Noisy",
+    "Wiener10",
+    "Wiener80",
+    "DeepFilterNet3"
+  ],
+  "clip_metrics": {
+    "Noisy": {
+      "CaseID": "1089-134686-0000__keyboard_typing_53501__snr0",
+      "Speaker": "1089",
+      "SpeechID": "1089-134686-0000",
+      "NoiseClass": "keyboard_typing",
+      "NoiseSource": "53501",
+      "InputSNR_dB": "0",
+      "Method": "Noisy",
+      "Window_ms": "0",
+      "ReadyDelay_ms": "0",
+      "OutputSNR_dB": "7.591213775569507e-09",
+      "SI_SDR_dB": "0.004370032732506703",
+      "STOI": "0.83579843897961"
+    },
+    "Wiener10": {
+      "CaseID": "1089-134686-0000__keyboard_typing_53501__snr0",
+      "Speaker": "1089",
+      "SpeechID": "1089-134686-0000",
+      "NoiseClass": "keyboard_typing",
+      "NoiseSource": "53501",
+      "InputSNR_dB": "0",
+      "Method": "Wiener10",
+      "Window_ms": "10",
+      "ReadyDelay_ms": "10",
+      "OutputSNR_dB": "1.829502961218993",
+      "SI_SDR_dB": "1.3666891748724885",
+      "STOI": "0.7619775113710974"
+    },
+    "Wiener20": {
+      "CaseID": "1089-134686-0000__keyboard_typing_53501__snr0",
+      "Speaker": "1089",
+      "SpeechID": "1089-134686-0000",
+      "NoiseClass": "keyboard_typing",
+      "NoiseSource": "53501",
+      "InputSNR_dB": "0",
+      "Method": "Wiener20",
+      "Window_ms": "20",
+      "ReadyDelay_ms": "20",
+      "OutputSNR_dB": "1.7397793523960554",
+      "SI_SDR_dB": "1.361369711617563",
+      "STOI": "0.7794865706165067"
+    },
+    "Wiener40": {
+      "CaseID": "1089-134686-0000__keyboard_typing_53501__snr0",
+      "Speaker": "1089",
+      "SpeechID": "1089-134686-0000",
+      "NoiseClass": "keyboard_typing",
+      "NoiseSource": "53501",
+      "InputSNR_dB": "0",
+      "Method": "Wiener40",
+      "Window_ms": "40",
+      "ReadyDelay_ms": "40",
+      "OutputSNR_dB": "1.774725237251837",
+      "SI_SDR_dB": "1.4442714557319436",
+      "STOI": "0.7970208043871438"
+    },
+    "Wiener80": {
+      "CaseID": "1089-134686-0000__keyboard_typing_53501__snr0",
+      "Speaker": "1089",
+      "SpeechID": "1089-134686-0000",
+      "NoiseClass": "keyboard_typing",
+      "NoiseSource": "53501",
+      "InputSNR_dB": "0",
+      "Method": "Wiener80",
+      "Window_ms": "80",
+      "ReadyDelay_ms": "80",
+      "OutputSNR_dB": "2.018014834412605",
+      "SI_SDR_dB": "1.7107415439693783",
+      "STOI": "0.8010073825311554"
+    },
+    "DeepFilterNet3": {
+      "CaseID": "1089-134686-0000__keyboard_typing_53501__snr0",
+      "Speaker": "1089",
+      "SpeechID": "1089-134686-0000",
+      "NoiseClass": "keyboard_typing",
+      "NoiseSource": "53501",
+      "InputSNR_dB": "0",
+      "Method": "DeepFilterNet3",
+      "Window_ms": "20",
+      "ReadyDelay_ms": "40",
+      "OutputSNR_dB": "15.650710118266066",
+      "SI_SDR_dB": "15.598674714930215",
+      "STOI": "0.9418208814339385"
+    }
+  },
+  "video_sha256": "3031d2b3b81dceab23a0e1a27800b54958fe43623a0f11f61ac5bb8380120a09",
+  "app_export_sha256": {
+    "demo_keyboard10.png": "f9e84a251cd1cc61108c019b7b03705957a4923b36d0953a02db6285c5c68504",
+    "demo_keyboard80.png": "7422a4dc85469ebaa5f08765695677b963066b3e9da05a12ce4960c42f4e219e",
+    "demo_deepfilter.png": "37680fa9711a5869b14d2e9f8e762b149e06784d2f30b5ce52d09468594b6b16"
+  },
+  "scenes": [
+    {
+      "start_seconds": 0,
+      "seconds": 10,
+      "audio": null
+    },
+    {
+      "start_seconds": 10,
+      "seconds": 10,
+      "audio": null
+    },
+    {
+      "start_seconds": 20,
+      "seconds": 7,
+      "audio": "Clean"
+    },
+    {
+      "start_seconds": 27,
+      "seconds": 7,
+      "audio": "Noisy"
+    },
+    {
+      "start_seconds": 34,
+      "seconds": 8,
+      "audio": "Wiener10"
+    },
+    {
+      "start_seconds": 42,
+      "seconds": 8,
+      "audio": "Wiener80"
+    },
+    {
+      "start_seconds": 50,
+      "seconds": 8,
+      "audio": "DeepFilterNet3"
+    },
+    {
+      "start_seconds": 58,
+      "seconds": 12,
+      "audio": null
+    },
+    {
+      "start_seconds": 70,
+      "seconds": 12,
+      "audio": null
+    },
+    {
+      "start_seconds": 82,
+      "seconds": 12,
+      "audio": null
+    }
+  ]
+}

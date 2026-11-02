@@ -7,13 +7,40 @@ title: Latency-Quality Trade-offs in Causal Speech Enhancement
 
 **Student:** Yixiang Ma | **SID:** 550762913 | **Course:** ELEC5305
 
-**Progress updated:** 28 October 2026
+**Final research project prepared:** 2 November 2026
+
+## Final project submission
+
+The final version evaluates the established stateful causal speech-enhancement
+project. The primary external LibriSpeech test-clean cohort contains 144 paired
+mixtures across six speakers, four recorded noises and three input SNRs. Four
+Wiener analysis windows (10/20/40/80 ms) are compared with the official
+pretrained DeepFilterNet3 reference. The separate VCTK-derived engineering cohort
+is reported with explicit training-overlap risk.
+
+[Read the 10-page report](output/pdf/Final_Project_Yixiang_Ma.pdf) |
+[Watch the 94-second code and audio demonstration](submissions/Final_Project_Demo.mp4) |
+[Run the final code](code/final/README.md) |
+[See primary results and exact metrics](results/final_external/README.md) |
+[Read the data attributions](docs/final_data_attribution.md).
+
+At 0 dB keyboard input SNR, mean STOI is **0.7336** before processing,
+**0.6953** for Wiener40, and **0.8998** for DeepFilterNet3. The two processors
+have the same **40 ms oldest-sample block-ready delay** under the stated
+convention. Wiener improves waveform SNR even where STOI declines; the report
+discusses the conflicting metrics and the conditions where Wiener retains a
+higher SNR. Timing is measured separately from output readiness. The experiment
+does not include live microphone/device latency.
+
+![Final external STOI versus ready delay](results/final_external/figures/quality_latency.png)
+
+## Earlier causal development (28 October 2026)
 
 ## Research Question
 
 How much enhancement quality can a causal system retain under a strict latency budget? Following teacher feedback, Wiener filtering is a classical baseline for studying this trade-off, not the research contribution itself. The current contribution is a reproducible comparison with explicit framing, calibration, delay, and timing assumptions.
 
-## Second Progress Stage
+## Second progress stage (historical development example)
 
 The MATLAB baseline processes sequential blocks with persistent state. The current experiment uses 4.5 seconds of one recorded 48 kHz VoiceBank utterance, mixed separately with real washing-machine and keyboard noise at 0 dB input SNR. Both methods receive identical mixtures, including a 300 ms noise-only prefix and a 100 ms recorded-noise tail. Speech quality is scored only over the 4.5-second utterance.
 
