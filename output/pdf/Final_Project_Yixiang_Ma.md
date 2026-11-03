@@ -8,13 +8,13 @@ How much speech quality does a causal enhancer gain by waiting for more audio? W
 
 ## 1. Introduction and research question
 
-A causal speech enhancer must choose what to suppress using only the audio that has arrived. Longer analysis windows can reveal spectral structure, but they also delay output and combine events over a longer interval. Average processing speed tells us little about a missed block deadline. We therefore measure quality, output readiness and computation separately.
+A causal speech enhancer must choose what to suppress using only the audio that has arrived. A longer analysis window may reveal spectral structure more clearly, but it also makes the processor wait longer and groups events across a wider interval. Average processing time can hide a slow individual block. We therefore measure quality, output readiness and computation separately.
 
 Research question: How does causal STFT scheduling delay affect Wiener enhancement quality, and how does this classical baseline compare with a pretrained enhancer at a reconciled delay budget? We examine single-channel speech mixed with recorded noise, using objective metrics and the official pretrained reference.
 
 ### 1.1 Contribution and project continuity
 
-The semester project began with an offline synthetic FIR/Wiener demonstration. It then added a stateful causal processor, recorded keyboard noise and a pretrained reference. This final study keeps those processors and tests them across more speakers, noise sources and SNRs. We vary the Wiener window, reconcile each processor's output schedule, compare paired quality scores and inspect a keyboard event.
+The semester project began with an offline demonstration using synthetic signals, FIR filtering and Wiener filtering. We then built a stateful causal processor, added recorded keyboard noise to the tests and introduced a pretrained comparator. The final study retains these processors and extends the evaluation to more speakers, noise recordings and input SNRs. We vary the Wiener window, put both output schedules on the same delay basis, compare paired quality scores and examine one keyboard event.
 
 The earlier single-utterance examples form the development stage. Code, protocol, source identifiers, checks, full result tables and an audition app accompany this report.
 
@@ -27,19 +27,19 @@ The earlier single-utterance examples form the development stage. Code, protocol
 
 Ephraim and Malah [1] distinguish Wiener spectral estimation from MMSE short-time spectral-amplitude estimation. Their decision-directed estimate of a priori SNR combines the current observation with preceding enhanced power. We use that idea to compute a Wiener gain from the estimated noise PSD, retaining the noisy phase.
 
-A noise-only startup interval supplies the PSD estimate, which remains fixed during subsequent speech frames. The same estimation rule applies to every window. Later keyboard bursts then expose how the processor behaves when noise statistics change after calibration.
+We estimate noise PSD from a noise-only startup interval and keep it fixed while processing the following speech frames. Every window uses the same estimation rule. Keyboard bursts arriving after calibration show how this fixed estimate responds when the noise statistics change.
 
 ### 2.2 Learned multi-frame enhancement
 
-Schroter et al. [2] combine coarse ERB-band envelope gains with complex multi-frame filtering of lower-frequency speech. The Wiener baseline instead applies a real gain to each frequency bin and retains noisy phase. The reference therefore tests a learned temporal representation against a processor whose noise model comes from a short startup interval.
+Schroter et al. [2] combine coarse ERB-band envelope gains with complex multi-frame filtering of lower-frequency speech. The Wiener baseline instead applies a real gain to each frequency bin and retains noisy phase. This comparison places a learned temporal representation beside a processor that estimates its noise model during a short startup interval.
 
 The paper describes a 48 kHz system with 20 ms windows, 10 ms hops and two frames of lookahead. We inspect the pinned runtime and configuration [3] to determine when output becomes available. The paper also reports DNS4 training with VCTK oversampling. We therefore use LibriSpeech for the primary analysis and treat the VCTK-derived cohort as a secondary engineering comparison.
 
 ### 2.3 Complementary metrics and the gap addressed here
 
-Taal et al. [4] provide an objective intelligibility predictor for time-frequency weighted speech. The standard pystoi implementation [5] correlates short-time one-third-octave envelopes after its prescribed preprocessing. It captures changes in speech-envelope structure alongside waveform-error metrics.
+Taal et al. [4] provide an objective intelligibility predictor for time-frequency weighted speech. The standard pystoi implementation [5] correlates short-time one-third-octave envelopes after its prescribed preprocessing. Its envelope-based score complements the waveform-error metrics used here.
 
-Le Roux et al. [6] motivate explicit separation-metric definitions and propose SI-SDR. We report zero-mean projection SI-SDR alongside ordinary reference-to-error SNR. SI-SDR tolerates an overall scale change; SNR penalises it. We preserve output amplitude for both measures and use STOI and fixed-gain audition to examine other aspects of quality.
+Le Roux et al. [6] motivate explicit separation-metric definitions and propose SI-SDR. We report zero-mean projection SI-SDR alongside ordinary reference-to-error SNR. SI-SDR tolerates an overall scale change; SNR penalises it. Both measures use the output at its original amplitude. STOI and fixed-gain audition provide additional views of quality.
 
 | Literature / resource | Design consequence | Interpretation |
 | --- | --- | --- |
@@ -257,13 +257,13 @@ The reference writes PCM16 output and Wiener retains double precision; they also
 
 ## 10. Discussion and conclusion
 
-Across the tested 10-80 ms Wiener windows, mean STOI generally improves with longer ready delay. Waveform SNR can peak at a shorter window, and keyboard-noise STOI stays below the noisy input. At the shared 40 ms ready delay, DeepFilterNet3 has higher mean STOI in every external noise/SNR condition, with positive paired intervals. Wiener40 retains higher SNR and SI-SDR in the 10 dB washing condition. The preferred processor and window depend on whether the task prioritises envelope correlation, waveform error or output delay.
+Across the tested 10-80 ms Wiener windows, mean STOI generally rises as the ready delay grows. Waveform SNR can reach its peak at a shorter window, while keyboard-noise STOI remains below the noisy input. At the shared 40 ms ready delay, DeepFilterNet3 has higher mean STOI in every external noise/SNR condition; all corresponding STOI paired intervals are positive. In the 10 dB washing condition, Wiener40 retains higher SNR and SI-SDR. Choosing a processor and window therefore depends on the relative importance of envelope correlation, waveform error and output delay.
 
-The pattern fits the methods in [1-3]: the Wiener estimator uses a fixed noise PSD and a real gain, whereas DeepFilterNet3 uses learned multi-frame complex filtering. We connect this difference to measured output schedules and paired quality results across two recorded noise classes. The public manifests, mixture recipe and scoring code specify the population behind each comparison.
+The methods in [1-3] help interpret this pattern. Wiener uses a noise PSD fixed at startup and applies a real gain; DeepFilterNet3 uses learned multi-frame complex filtering. We relate these differences to measured output schedules and paired quality scores for two recorded noise classes. Public manifests, the mixture recipe and the scoring code define the sample population behind each comparison.
 
 ### Reproducible deliverables
 
-The repository contains the runnable processors and preparation/scoring scripts, manifests, exact CSV results, validation evidence and instructions. launch_final_demo reruns selected methods, verifies agreement with evaluated outputs and plays clean/noisy/processed recordings at one common gain. The accompanying short video shows actual app results and those audio excerpts. Repository: https://github.com/Simon1ma/elec5305-project-550762913 .
+The repository provides runnable processors, preparation and scoring scripts, manifests, exact CSV results, validation evidence and instructions. launch_final_demo reruns selected methods, checks their agreement with evaluated outputs and plays clean, noisy and processed recordings at one common gain. The short video shows the app results and includes those audio excerpts. Repository: https://github.com/Simon1ma/elec5305-project-550762913 .
 
 ### References
 
