@@ -4,6 +4,8 @@
 
 **Project site:** https://simon1ma.github.io/elec5305-project-550762913/
 
+**GitHub source code:** https://github.com/Simon1ma/elec5305-project-550762913
+
 **Final research project prepared:** 2 November 2026
 
 The final experiment preserves the stateful causal Wiener implementation and

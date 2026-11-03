@@ -27,6 +27,8 @@ def main():
     paths=files();checks={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     readme=(
         '# ELEC5305 final project submission\n\n'
+        'GitHub source code: https://github.com/Simon1ma/elec5305-project-550762913\n'
+        'GitHub run instructions: https://github.com/Simon1ma/elec5305-project-550762913/blob/main/code/final/README.md\n\n'
         'Research report: output/pdf/Final_Project_Yixiang_Ma.pdf (10 pages).\n'
         'Code-and-audio demonstration: submissions/Final_Project_Demo.mp4 (94 seconds).\n'
         'Runnable implementation: code/final/README.md; shared causal helpers are in code/latency/.\n'
