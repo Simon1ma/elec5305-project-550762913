@@ -111,7 +111,7 @@ def main():
     h('4. Experimental design and data provenance')
     sub('4.1 Separate development, external and engineering cohorts')
     p('We fixed the final settings using the earlier p232_003 VoiceBank utterance, DEMAND washing-machine recording and ESC-50 keyboard source 137. For the primary external cohort, we take the first six lexicographically sorted LibriSpeech test-clean speaker IDs [7] and the first two sorted recordings per speaker lasting at least 4.5 s. We retain the first 4.5 s and resample once from 16 to 48 kHz using 3:1 polyphase conversion. The 16 kHz originals contain speech bandwidth up to 8 kHz. Resampling occurs before enhancement timing begins.')
-    p('The secondary cohort uses twelve native-48-kHz utterances from the first six sorted speakers in the official VoiceBank clean training archive [8]. Because [2] reports VCTK in the reference model\'s training, this cohort supports an engineering comparison. We fixed the LibriSpeech selection rule and processor settings before external inference and report the two corpora separately. The published training description does not identify individual LibriSpeech files.')
+    p('The secondary cohort uses twelve native-48-kHz utterances from the first six sorted speakers in the official VoiceBank clean training archive [8]. Because [2] reports VCTK in the reference model\'s training, this cohort supports an engineering comparison. We fixed the LibriSpeech selection rule and processor settings before external inference and report the two corpora separately.')
     table(['Cohort','Speakers','Speech recordings','Role'],[
         ['External: LibriSpeech test-clean','1089, 1188, 121, 1221, 1284, 1320','2 per speaker; 12 total','Primary; 16 kHz source'],
         ['Engineering: VoiceBank / VCTK','p226, p227, p228, p230, p231, p233','2 per speaker; 12 total','Secondary engineering comparison']], [119,161,99,108])
@@ -167,7 +167,7 @@ def main():
     page()
 
     h('8. Keyboard event and secondary cohort')
-    figure('keyboard_event.png',f"Figure 4. First external keyboard case, 0 dB. The event centre ({event['event_centre_s']:.3f} s) maximises 20 ms true-noise energy on a 10 ms grid, excluding 300 ms speech boundaries. Selection uses true noise energy before outcome inspection. Waveforms and display STFTs share scales; native gain maps retain their own grids.",maxheight=380)
+    figure('keyboard_event.png',f"Figure 4. First external keyboard case, 0 dB. The event centre ({event['event_centre_s']:.3f} s) maximises 20 ms true-noise energy on a 10 ms grid, excluding 300 ms speech boundaries.",maxheight=380)
     eventrows=read(EXT/'event_metrics.csv')
     table(['Illustrative 400 ms event','Noisy','Wiener10','Wiener80','DFNet3'],[
         ['Reference-to-error SNR (dB)']+[f"{float(r['EventSNR_dB']):.2f}" for r in eventrows]], [171,79,79,79,79])
@@ -190,7 +190,6 @@ def main():
     h('10. Discussion and conclusion')
     p('Across the tested 10-80 ms Wiener windows, mean STOI generally improves with longer ready delay. Waveform SNR can peak at a shorter window, and keyboard-noise STOI stays below the noisy input. At the shared 40 ms ready delay, DeepFilterNet3 has higher mean STOI in every external noise/SNR condition, with positive paired intervals. Wiener40 retains higher SNR and SI-SDR in the 10 dB washing condition. The preferred processor and window depend on whether the task prioritises envelope correlation, waveform error or output delay.')
     p("The pattern fits the methods in [1-3]: the Wiener estimator uses a fixed noise PSD and a real gain, whereas DeepFilterNet3 uses learned multi-frame complex filtering. We connect this difference to measured output schedules and paired quality results across two recorded noise classes. The public manifests, mixture recipe and scoring code specify the population behind each comparison.")
-    p('The most direct follow-up is to replace the fixed noise estimator with a causal adaptive estimator while holding windows, smoothing time and gain floor fixed. A speech-contaminated prefix and additional source-disjoint transient noises would test the behaviour seen in the keyboard event. Device-loop measurements could then include capture, resampling, processing, output buffering and deadline tails. Listening and word-recognition tests would measure effects beyond the objective scores reported here.')
     sub('Reproducible deliverables')
     p('The repository contains the runnable processors and preparation/scoring scripts, manifests, exact CSV results, validation evidence and instructions. launch_final_demo reruns selected methods, verifies agreement with evaluated outputs and plays clean/noisy/processed recordings at one common gain. The accompanying short video shows actual app results and those audio excerpts. Repository: https://github.com/Simon1ma/elec5305-project-550762913 .','SmallR')
     sub('References')

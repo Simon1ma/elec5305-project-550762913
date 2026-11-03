@@ -94,7 +94,7 @@ We run the official v0.5.6 Windows Rust/Tract executable with a pinned DeepFilte
 
 We fixed the final settings using the earlier p232_003 VoiceBank utterance, DEMAND washing-machine recording and ESC-50 keyboard source 137. For the primary external cohort, we take the first six lexicographically sorted LibriSpeech test-clean speaker IDs [7] and the first two sorted recordings per speaker lasting at least 4.5 s. We retain the first 4.5 s and resample once from 16 to 48 kHz using 3:1 polyphase conversion. The 16 kHz originals contain speech bandwidth up to 8 kHz. Resampling occurs before enhancement timing begins.
 
-The secondary cohort uses twelve native-48-kHz utterances from the first six sorted speakers in the official VoiceBank clean training archive [8]. Because [2] reports VCTK in the reference model's training, this cohort supports an engineering comparison. We fixed the LibriSpeech selection rule and processor settings before external inference and report the two corpora separately. The published training description does not identify individual LibriSpeech files.
+The secondary cohort uses twelve native-48-kHz utterances from the first six sorted speakers in the official VoiceBank clean training archive [8]. Because [2] reports VCTK in the reference model's training, this cohort supports an engineering comparison. We fixed the LibriSpeech selection rule and processor settings before external inference and report the two corpora separately.
 
 | Cohort | Speakers | Speech recordings | Role |
 | --- | --- | --- | --- |
@@ -208,9 +208,9 @@ At 10 dB washing input, Wiener40 reaches 16.60 dB SNR versus 14.25 dB for DeepFi
 
 ## 8. Keyboard event and secondary cohort
 
-Figure 4. First external keyboard case, 0 dB. The event centre (1.520 s) maximises 20 ms true-noise energy on a 10 ms grid, excluding 300 ms speech boundaries. Selection uses true noise energy before outcome inspection. Waveforms and display STFTs share scales; native gain maps retain their own grids.
+Figure 4. First external keyboard case, 0 dB. The event centre (1.520 s) maximises 20 ms true-noise energy on a 10 ms grid, excluding 300 ms speech boundaries.
 
-![Figure 4. First external keyboard case, 0 dB. The event centre (1.520 s) maximises 20 ms true-noise energy on a 10 ms grid, excluding 300 ms speech boundaries. Selection uses true noise energy before outcome inspection. Waveforms and display STFTs share scales; native gain maps retain their own grids.](../../results/final_external/figures/keyboard_event.png)
+![Figure 4. First external keyboard case, 0 dB. The event centre (1.520 s) maximises 20 ms true-noise energy on a 10 ms grid, excluding 300 ms speech boundaries.](../../results/final_external/figures/keyboard_event.png)
 
 | Illustrative 400 ms event | Noisy | Wiener10 | Wiener80 | DFNet3 |
 | --- | --- | --- | --- | --- |
@@ -260,8 +260,6 @@ The reference writes PCM16 output and Wiener retains double precision; they also
 Across the tested 10-80 ms Wiener windows, mean STOI generally improves with longer ready delay. Waveform SNR can peak at a shorter window, and keyboard-noise STOI stays below the noisy input. At the shared 40 ms ready delay, DeepFilterNet3 has higher mean STOI in every external noise/SNR condition, with positive paired intervals. Wiener40 retains higher SNR and SI-SDR in the 10 dB washing condition. The preferred processor and window depend on whether the task prioritises envelope correlation, waveform error or output delay.
 
 The pattern fits the methods in [1-3]: the Wiener estimator uses a fixed noise PSD and a real gain, whereas DeepFilterNet3 uses learned multi-frame complex filtering. We connect this difference to measured output schedules and paired quality results across two recorded noise classes. The public manifests, mixture recipe and scoring code specify the population behind each comparison.
-
-The most direct follow-up is to replace the fixed noise estimator with a causal adaptive estimator while holding windows, smoothing time and gain floor fixed. A speech-contaminated prefix and additional source-disjoint transient noises would test the behaviour seen in the keyboard event. Device-loop measurements could then include capture, resampling, processing, output buffering and deadline tails. Listening and word-recognition tests would measure effects beyond the objective scores reported here.
 
 ### Reproducible deliverables
 
