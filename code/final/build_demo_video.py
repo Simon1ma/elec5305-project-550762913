@@ -19,6 +19,14 @@ def main():
     submission=ROOT/'submissions';submission.mkdir(exist_ok=True)
     font=lambda size,bold=False:ImageFont.truetype('C:/Windows/Fonts/'+('arialbd.ttf' if bold else 'arial.ttf'),size)
     manifest=json.loads((OUT/'input_manifest.json').read_text());first=manifest['cases'][0]['speech_id']
+    secondary=json.loads((ROOT/'results/final/input_manifest.json').read_text())
+    cohorts=[]
+    for label,source in [('Primary: LibriSpeech test-clean',manifest),('Secondary: VoiceBank / VCTK',secondary)]:
+        speakers={c['speaker'] for c in source['cases']}
+        utterances={(c['speaker'],c['speech_id']) for c in source['cases']}
+        assert len(speakers)==6 and len(utterances)==12 and len(source['cases'])==144
+        assert all(sum(s==speaker for s,_ in utterances)==2 for speaker in speakers)
+        cohorts.append({'label':label,'speakers':len(speakers),'utterances':len(utterances),'mixtures':len(source['cases'])})
     case=next(c for c in manifest['cases'] if c['speech_id']==first and c['noise_class']=='keyboard_typing' and c['input_snr_db']==0)
     d=loadmat(LOCAL/'wiener'/(case['case_id']+'.mat'),simplify_cells=True);P=manifest['prefix_samples'];N=manifest['speech_samples'];fs=manifest['fs']
     raw,rate=sf.read(LOCAL/'reference'/(case['case_id']+'.wav'));assert rate==fs
@@ -52,6 +60,27 @@ def main():
         'Official pretrained DeepFilterNet3: compare at the same 40 ms ready delay.',
         'This captioned walkthrough uses actual app exports and evaluated audio. Recorded files; no live microphone latency claim.'
     ],'01_title'),10)
+    im=Image.new('RGB',(W,H),'#f6f9fb');draw=ImageDraw.Draw(im)
+    draw.rectangle((0,0,W,18),fill='#176b87')
+    draw.text((90,80),'Evaluation design: two speech cohorts',font=font(48,True),fill='#163c50')
+    for cohort,y,detail in zip(cohorts,[195,445],[
+        '16 kHz originals resampled to 48 kHz for processing',
+        'Native 48 kHz recordings; secondary engineering comparison']):
+        draw.rounded_rectangle((80,y,1520,y+220),radius=18,fill='white',outline='#d3e0e7',width=2)
+        draw.text((110,y+25),cohort['label'],font=font(40,True),fill='#176b87')
+        draw.text((110,y+85),'6 speakers x 2 utterances = 12 speech clips',font=font(36),fill='#233b46')
+        draw.text((110,y+145),detail,font=font(30),fill='#52656d')
+    lines=[
+        'Each cohort: 12 clips x 4 noise recordings x 3 SNRs = 144 mixtures',
+        'Noise: 2 washing-machine + 2 keyboard recordings | SNR: 0 / 5 / 10 dB',
+        'Scoring: noisy + Wiener10/20/40/80 + DeepFilterNet3 = 6 conditions',
+        'Combined: 288 mixtures and 1,728 quality-score rows',
+        'The listening demo below illustrates one case from this larger evaluation.'
+    ]
+    for i,line in enumerate(lines):
+        draw.text((90,715+58*i),line,font=font(30,i==3),fill='#163c50' if i==3 else '#233b46')
+    draw.text((90,H-65),'Yixiang Ma | ELEC5305 Final Project | SID 550762913',font=font(26),fill='#52656d')
+    cohortpath=work/'01b_evaluation_design.png';im.save(cohortpath);add(cohortpath,18)
     add(card('Run the code and audition the result',[
         "addpath(fullfile(pwd,'code','final'));",
         "launch_final_demo('external');",
@@ -94,6 +123,7 @@ def main():
     evidence={'case_id':case['case_id'],'selection':'First external utterance, first keyboard source at 0 dB; not selected by scores.',
         'duration_seconds':offset,'video_style':'Captioned walkthrough using actual MATLAB app exports after processor reruns; no simulated live cursor or microphone capture.',
         'common_audio_gain':gain,'sample_rate':fs,'listening_order':['Clean','Noisy','Wiener10','Wiener80','DeepFilterNet3'],
+        'evaluation_cohorts':cohorts,
         'clip_metrics':case_scores,'video_sha256':hashlib.sha256(video.read_bytes()).hexdigest(),
         'app_export_sha256':{name:hashlib.sha256((OUT/'figures'/name).read_bytes()).hexdigest() for name in ['demo_keyboard10.png','demo_keyboard80.png','demo_deepfilter.png']},
         'scenes':[{'start_seconds':sum(x['seconds'] for x in scenes[:i]),'seconds':s['seconds'],'audio':s['audio']} for i,s in enumerate(scenes)]}

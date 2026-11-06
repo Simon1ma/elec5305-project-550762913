@@ -1,7 +1,7 @@
 {
   "case_id": "1089-134686-0000__keyboard_typing_53501__snr0",
   "selection": "First external utterance, first keyboard source at 0 dB; not selected by scores.",
-  "duration_seconds": 94,
+  "duration_seconds": 112,
   "video_style": "Captioned walkthrough using actual MATLAB app exports after processor reruns; no simulated live cursor or microphone capture.",
   "common_audio_gain": 0.95,
   "sample_rate": 48000,
@@ -11,6 +11,20 @@
     "Wiener10",
     "Wiener80",
     "DeepFilterNet3"
+  ],
+  "evaluation_cohorts": [
+    {
+      "label": "Primary: LibriSpeech test-clean",
+      "speakers": 6,
+      "utterances": 12,
+      "mixtures": 144
+    },
+    {
+      "label": "Secondary: VoiceBank / VCTK",
+      "speakers": 6,
+      "utterances": 12,
+      "mixtures": 144
+    }
   ],
   "clip_metrics": {
     "Noisy": {
@@ -98,7 +112,7 @@
       "STOI": "0.9418208814339385"
     }
   },
-  "video_sha256": "3031d2b3b81dceab23a0e1a27800b54958fe43623a0f11f61ac5bb8380120a09",
+  "video_sha256": "bdb914477163b521ea931a33b7eb55fdc661bdf2bc951a07a967cce366e7e7b0",
   "app_export_sha256": {
     "demo_keyboard10.png": "f9e84a251cd1cc61108c019b7b03705957a4923b36d0953a02db6285c5c68504",
     "demo_keyboard80.png": "7422a4dc85469ebaa5f08765695677b963066b3e9da05a12ce4960c42f4e219e",
@@ -112,46 +126,51 @@
     },
     {
       "start_seconds": 10,
+      "seconds": 18,
+      "audio": null
+    },
+    {
+      "start_seconds": 28,
       "seconds": 10,
       "audio": null
     },
     {
-      "start_seconds": 20,
+      "start_seconds": 38,
       "seconds": 7,
       "audio": "Clean"
     },
     {
-      "start_seconds": 27,
+      "start_seconds": 45,
       "seconds": 7,
       "audio": "Noisy"
     },
     {
-      "start_seconds": 34,
+      "start_seconds": 52,
       "seconds": 8,
       "audio": "Wiener10"
     },
     {
-      "start_seconds": 42,
+      "start_seconds": 60,
       "seconds": 8,
       "audio": "Wiener80"
     },
     {
-      "start_seconds": 50,
+      "start_seconds": 68,
       "seconds": 8,
       "audio": "DeepFilterNet3"
     },
     {
-      "start_seconds": 58,
+      "start_seconds": 76,
       "seconds": 12,
       "audio": null
     },
     {
-      "start_seconds": 70,
+      "start_seconds": 88,
       "seconds": 12,
       "audio": null
     },
     {
-      "start_seconds": 82,
+      "start_seconds": 100,
       "seconds": 12,
       "audio": null
     }
