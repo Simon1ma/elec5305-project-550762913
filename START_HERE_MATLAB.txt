@@ -16,3 +16,6 @@ python code/scene/evaluate_scene_holdout.py
 This checks the exact models/features on the nine new source recordings, without refitting; precomputed features are bundled. Optional live MFCC inference via START_PROJECT('advanced') additionally requires Audio Toolbox.
 
 Personal raw audio is not published. Rebuilding its features and 27 mixtures from raw recordings requires the private recordings described in code/scene/README.md. All source code and numerical tables are provided. This is separate from the fully bundled public example above.
+
+COMPLETE SUBMISSION ZIP (private assessment data included)
+Set Current Folder to Code. START_PROJECT('personal') opens all 27 personal mixtures; START_PROJECT('personal_scene') opens the 18-recording baseline scene app; START_PROJECT('personal_check') validates all 27 Wiener40 outputs and nine baseline classifications. These modes require the private data in the assessment ZIP; public GitHub omits the raw phone recordings. Advanced method selection still requires Audio Toolbox and configured Python.

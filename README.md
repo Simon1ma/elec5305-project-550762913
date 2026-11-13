@@ -3,7 +3,7 @@
 
 ## Download and test in MATLAB
 
-**Code update: 14 November 2026.** The existing submitted report/video files are preserved. This update improves code availability and reproducibility.
+**Final revision: 14 November 2026.** The report, video, code and project website are synchronised for resubmission.
 
 Download [the repository ZIP](https://github.com/Simon1ma/elec5305-project-550762913/archive/refs/heads/main.zip), fully extract it, and set MATLAB Current Folder to the repository root. Run:
 
@@ -26,7 +26,7 @@ For frozen multi-scale scene-model evaluation, install the two documented Python
 
 **GitHub source code:** https://github.com/Simon1ma/elec5305-project-550762913
 
-**Final research project prepared:** 2 November 2026
+**Final report revised:** 14 November 2026
 
 The final experiment preserves the stateful causal Wiener implementation and
 official DeepFilterNet3 reference developed after teacher feedback. It evaluates
@@ -37,8 +37,8 @@ as a secondary engineering comparison because the reference paper mentions
 VCTK in training. Neither cohort is claimed to be fully verified independent
 of upstream model training.
 
-**Final deliverables:** [10-page research report](output/pdf/Final_Project_Yixiang_Ma.pdf)
-| [94-second code and audio demonstration](submissions/Final_Project_Demo.mp4)
+**Final deliverables:** [16-page research report with linked contents](output/pdf/Final_Project_Yixiang_Ma.pdf)
+| [181-second code and audio demonstration](submissions/Final_Project_Demo.mp4)
 | [Runnable final code and setup](code/final/README.md)
 | [Primary external results](results/final_external/README.md)
 | [Secondary engineering results](results/final/README.md)

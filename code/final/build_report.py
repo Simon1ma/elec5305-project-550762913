@@ -10,6 +10,17 @@ from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from reportlab.lib.utils import ImageReader
 from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,Image,Table,TableStyle,PageBreak
 from reportlab.graphics.shapes import Drawing,Rect,String,Line,Polygon
+from reportlab.platypus.tableofcontents import TableOfContents
+
+class ReportDocument(SimpleDocTemplate):
+    def afterFlowable(self, flowable):
+        if isinstance(flowable, Paragraph) and flowable.style.name == "HeadR":
+            label=flowable.getPlainText()
+            if label == "Contents":return
+            key="section-"+str(self.seq.nextf("section"))
+            self.canv.bookmarkPage(key)
+            self.canv.addOutlineEntry(label,key,level=0,closed=False)
+            self.notify("TOCEntry",(0,label,self.page,key))
 
 ROOT=Path(__file__).resolve().parents[2];EXT=ROOT/'results/final_external';SECOND=ROOT/'results/final'
 
@@ -59,18 +70,21 @@ def main():
         md.append('| '+' | '.join(headers)+' |\n| '+' | '.join(['---']*len(headers))+' |\n'+'\n'.join('| '+' | '.join(map(str,r))+' |' for r in rows)+'\n')
 
     p('Sound-Scene Analysis and\nLatency-Quality Trade-offs in Causal Speech Enhancement'.replace('\n',' '),'TitleR')
-    p('ELEC5305 Final Project | Yixiang Ma | SID 550762913 | 13 November 2026','SmallR')
+    p('ELEC5305 Final Project | Yixiang Ma | SID 550762913 | 14 November 2026','SmallR')
     sub('Abstract')
     p('How do output delay and noise-estimation assumptions affect causal speech-enhancement quality across recorded sound conditions? We test four STFT Wiener windows (10/20/40/80 ms) with a shared 100 ms decision-directed smoothing time constant and compare them with the official pretrained DeepFilterNet3 reference. The primary LibriSpeech test-clean evaluation contains 144 paired mixtures from twelve utterances, six speakers, four noise recordings and three input SNRs. A native-48-kHz VCTK-derived cohort provides a secondary engineering comparison. On LibriSpeech at 0 dB keyboard SNR, Wiener40 raises waveform SNR to 2.13 dB but lowers STOI from 0.7336 to 0.6953. At the same 40 ms oldest-sample block-ready delay, DeepFilterNet3 reaches 13.55 dB SNR and 0.8998 STOI. Longer Wiener windows improve mean STOI in this condition, although waveform SNR peaks earlier. All 25,718 profiled external Wiener calls fit within their hop budgets on the tested CPU. A connected personal-recording study identifies 8/9 new isolated sound recordings using frozen multi-scale fusion. Twenty-seven reading/bottle mixtures expose a quiet-prefix calibration failure. An exploratory online power tracker raises SNR at 0 dB by 2.69 dB but reduces STOI in all 27 mixtures, illustrating speech-contamination costs.')
     h('1. Introduction and research question')
     p('A causal speech enhancer must choose what to suppress using only the audio that has arrived. A longer analysis window may reveal spectral structure more clearly, but it also makes the processor wait longer and groups events across a wider interval. Average processing time can hide a slow individual block. We therefore measure quality, output readiness and computation separately.')
     p('Research question: How do output delay and noise-estimation assumptions affect causal speech-enhancement quality across recorded sound conditions? We examine single-channel speech mixed with recorded noise, using objective metrics and the official pretrained reference.')
-    p('A connected personal-recording study asks how acoustic scene characteristics relate to classification and enhancement failure. Nine development and nine new recordings cover plastic-bottle pressing, alarms and Chinese reading. A frozen dual-scale classifier identifies 8/9 new sources. Twenty-seven reading/bottle mixtures expose a non-representative calibration prefix. A subsequent online-estimation comparison is explicitly exploratory.')
+    p('To examine the sound-condition component of this question, the personal-recording study characterises acoustic structure alongside enhancement failures. Nine development and nine new recordings cover plastic-bottle pressing, alarms and Chinese reading. A frozen dual-scale classifier identifies 8/9 new sources. Twenty-seven reading/bottle mixtures expose a non-representative calibration prefix. A subsequent online-estimation comparison is explicitly exploratory.')
     sub('1.1 Contribution and project continuity')
     p('The semester project began with an offline demonstration using synthetic signals, FIR filtering and Wiener filtering. We then built a stateful causal processor, added recorded keyboard noise to the tests and introduced a pretrained comparator. The final study retains these processors and extends the evaluation to more speakers, noise recordings and input SNRs. We vary the Wiener window, put both output schedules on the same delay basis, compare paired quality scores and examine one keyboard event.')
     p('The earlier single-utterance examples form the development stage. Code, protocol, source identifiers, checks, full result tables and an audition app accompany this report.','SmallR')
     page()
 
+    h('Contents')
+    toc=TableOfContents();toc.levelStyles=[ParagraphStyle(name='TOCMain',fontName='Helvetica',fontSize=10,leading=15,spaceBefore=8,textColor=colors.HexColor('#163c50'))]
+    story.append(toc);md.append('Contents are generated with linked section headings and page numbers in the PDF.\n');page()
     h('2. Literature review and research rationale')
     sub('2.1 Statistical spectral enhancement')
     p('Ephraim and Malah [1] distinguish Wiener spectral estimation from MMSE short-time spectral-amplitude estimation. Their decision-directed estimate of a priori SNR combines the current observation with preceding enhanced power. We use that idea to compute a Wiener gain from the estimated noise PSD, retaining the noisy phase.')
@@ -88,6 +102,14 @@ def main():
     caption('Table 1. Prior work informs the processor, reference and complementary quality measures used in this latency-quality comparison.')
     page()
 
+    sub('2.4 Acoustic features and classifier choices')
+    p('Davis and Mermelstein [10] compare spectral representations for speech recognition and motivate mel-frequency cepstral analysis. Here MFCCs describe short-time spectral shape; temporal differences and periodicity complement the original relative acoustic descriptors. The classification task is sound identification rather than word transcription. This feature design lets us inspect alarm periodicity and bottle-event variability in the same recordings used to motivate enhancement failure analysis.')
+    p('Cortes and Vapnik [11] develop support-vector classification with a separating surface in a transformed feature space. We compare linear and radial-basis SVM routes against centroid distances. The centroid offers a transparent geometric baseline; the nonlinear route allows curved boundaries but adds sensitivity to its parameters and the small fitting sample. Source-held-out development and a frozen new-recording test measure whether its apparent development advantage transfers.')
+    p('Geurts et al. [12] introduce extremely randomised trees by randomising candidate attributes and split thresholds. This provides a different nonlinear comparator to the SVM. Our temporal design aggregates overlapping windows at two scales, retaining short events alongside longer structure. Equal source weighting prevents a long recording from dominating fitting. Fusion combines SVM/tree vote fractions as agreement scores; its value is assessed against its individual branches.')
+    sub('2.5 Gap, rationale and tools learned')
+    p('The enhancement literature motivates statistical noise estimation and learned temporal filtering; the classification literature supplies acoustic representations and decision rules. The project examines how those choices behave under explicit output schedules and changing recorded noise. Public mixtures test delay and method effects. Personal source classification describes acoustic differences, and controlled speech/bottle mixtures then probe whether a quiet startup interval represents later events. A fixed-parameter online update isolates one estimator change. These stages address the same enhancement question through complementary measurements.')
+    p('Implementation required learning stateful MATLAB STFT/overlap-add processing, MFCC and delta extraction with Audio Toolbox, recording-grouped Python classifiers, the official Rust/Tract inference runtime, fixed-shift metric alignment and speaker bootstrap summaries. We distinguish output-ready delay from transport shift and measured computation. The GUI and fixed-gain audio comparisons expose results that a single aggregate SNR would conceal.')
+    page()
     h('3. Methods: stateful causal enhancement')
     diagram=Drawing(487,64)
     labels=['Recorded clean + noise','Shared mixture + prefix','Arrived-hop processor','Aligned scoring / audio']
@@ -190,10 +212,11 @@ def main():
 
     h('10. Personal sound-scene classification')
     sub('10.1 Research connection, acquisition and frozen evaluation')
-    p('The connected question is how time-varying acoustic structure affects sound identification and causal enhancement. The classifier analyses separate source recordings. It does not classify overlapping speech and noise, or automatically select an enhancer. Classification acquisition time is separate from enhancement output-ready delay.')
+    p('The personal-recording analysis characterises sound dynamics to interpret the noise-estimation assumptions in the main research question. The classifier analyses separate source recordings. It does not classify overlapping speech and noise, or automatically select an enhancer. Classification acquisition time is separate from enhancement output-ready delay.')
     p('The author recorded plastic-bottle pressing, alarms and Chinese poem readings using a phone. Takes 01-03 provide nine development sources (87.9573 s); the three pilot files duplicate take 01 and add no sources. Takes 04-06 provide nine new sources (105.4293 s), recorded using the same phone in a bedroom within 0.5 m. Source and decoded hashes differ between sets.')
     sub('10.2 Features, grouping and comparisons')
     p('The rich vector contains 69 descriptors: 12 relative acoustic features, 26 MFCC mean/SD values, 26 delta/delta-delta SD values and five periodicity/envelope descriptors. Analysis uses 16 kHz audio, 25 ms Hann frames and 10 ms hops. Temporal models aggregate 1.5/3 s windows with 50% overlap. Each source receives equal training weight; all its windows and perturbations remain in one fold. Standardisation uses training sources only.')
+    p('Linear SVM uses C=1; RBF SVM uses C=4 and gamma=scale. ExtraTrees uses 128 trees, maximum depth 6, minimum leaf size 2, square-root feature sampling and seed 5305. Retain windows with RMS at least 15% of the maximum at each source/scale (with a numerical floor and one-window fallback). Fusion averages class-vote fractions equally across scales and SVM/tree branches. Model settings and preprocessing are fixed before the new-recording test.')
     p('Three development folds each hold out one take per class. Eleven routes compare centroids, linear/RBF SVM, ExtraTrees, temporal voting, feature ablations, fusion and fitting-side noise augmentation. The primary dual-scale fusion was specified before new-recording evaluation. Stored models and feature fingerprints were checked unchanged; no test refitting occurred. Half gain and seeded 20 dB white noise are probes of the same nine sources.')
     table(['Route','Development original','New original','New white20'],[
         ['12-feature centroid','8/9','8/9','4/9'],
@@ -232,12 +255,13 @@ def main():
     p("The methods in [1-3] help interpret this pattern. Wiener uses a noise PSD fixed at startup and applies a real gain; DeepFilterNet3 uses learned multi-frame complex filtering. We relate these differences to measured output schedules and paired quality scores for two recorded noise classes. Public manifests, the mixture recipe and the scoring code define the sample population behind each comparison.")
     p('The personal extension connects acoustic structure, source-level identification and enhancement startup sensitivity. Frozen fusion identifies 8/9 new recordings, while calibration mismatch explains near-identity fixed-Wiener output on the bottle mixtures. The exploratory update quantifies one simple alternative. Broader capture conditions and listener evaluation remain future work.')
     sub('Reproducible deliverables')
-    p('The repository provides runnable processors, preparation and scoring scripts, manifests, exact CSV results, validation evidence and instructions. launch_final_demo reruns selected methods, checks their agreement with evaluated outputs and plays clean, noisy and processed recordings at one common gain. The short video shows the app results and includes those audio excerpts. Repository: https://github.com/Simon1ma/elec5305-project-550762913 .','SmallR')
+    p('The repository provides processors, preparation/scoring scripts, exact CSV results and a bundled public-data example. START_PROJECT reruns all four Wiener settings and checks saved-output agreement; its DeepFilterNet3 option plays saved official output. The check option runs numerical self-checks. The complete submission also includes the private personal-recording data for the personal mode of launch_final_demo. The video includes fixed-gain audio comparisons. Repository: https://github.com/Simon1ma/elec5305-project-550762913 .','SmallR')
     sub('Project links and acknowledgement')
     for label,url in [('Project website','https://simon1ma.github.io/elec5305-project-550762913/'),('GitHub code and run instructions','https://github.com/Simon1ma/elec5305-project-550762913'),('Project video (local copy)','Final_Project_Demo.mp4'),('Repository video location','https://github.com/Simon1ma/elec5305-project-550762913/blob/main/submissions/Final_Project_Demo.mp4')]:
         story.append(Paragraph(f'<link href="{url}" color="#176b87">{label}</link>',styles['SmallR']));md.append(f'[{label}]({url})')
     p('OpenAI Codex assisted with code development, experimental execution, report editing and media packaging.','SmallR')
-    sub('References')
+    page()
+    h('References')
     references=[
         ('[1] Y. Ephraim and D. Malah, "Speech Enhancement Using a Minimum Mean-Square Error Short-Time Spectral Amplitude Estimator," IEEE Trans. ASSP, 32(6), 1109-1121, 1984.','https://malah.net.technion.ac.il/files/2017/08/Ephraim_Speech_Enhancement_ASSP84.pdf'),
         ('[2] H. Schroter et al., "DeepFilterNet: Perceptually Motivated Real-Time Speech Enhancement," arXiv:2305.08227, 2023.','https://arxiv.org/abs/2305.08227'),
@@ -247,13 +271,16 @@ def main():
         ('[6] J. Le Roux, S. Wisdom, H. Erdogan and J. R. Hershey, "SDR - half-baked or well done?" ICASSP 2019; arXiv:1811.02508.','https://arxiv.org/abs/1811.02508'),
         ('[7] V. Panayotov, G. Chen, D. Povey and S. Khudanpur, "LibriSpeech: an ASR corpus based on public domain audio books," ICASSP 2015. Test-clean, OpenSLR SLR12, CC BY 4.0.','https://www.openslr.org/12/'),
         ('[8] C. Valentini-Botinhao, "Noisy speech database for training speech enhancement algorithms and TTS models," University of Edinburgh, 2017; clean training recordings, CC BY 4.0.','https://doi.org/10.7488/ds/2117'),
-        ('[9] K. J. Piczak, "ESC: Dataset for Environmental Sound Classification," ACM Multimedia 2015. ESC-50 commit 33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6; CC BY-NC with individual clip attributions.','https://github.com/karolpiczak/ESC-50')]
+        ('[9] K. J. Piczak, "ESC: Dataset for Environmental Sound Classification," ACM Multimedia 2015. ESC-50 commit 33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6; CC BY-NC with individual clip attributions.','https://github.com/karolpiczak/ESC-50'),
+        ('[10] S. B. Davis and P. Mermelstein, "Comparison of Parametric Representations for Monosyllabic Word Recognition in Continuously Spoken Sentences," IEEE Trans. ASSP, 28(4), 357-366, 1980.','https://doi.org/10.1109/TASSP.1980.1163420'),
+        ('[11] C. Cortes and V. Vapnik, "Support-vector networks," Machine Learning, 20, 273-297, 1995.','https://doi.org/10.1007/BF00994018'),
+        ('[12] P. Geurts, D. Ernst and L. Wehenkel, "Extremely randomized trees," Machine Learning, 63, 3-42, 2006.','https://doi.org/10.1007/s10994-006-6226-1')]
     for text,url in references:
         story.append(Paragraph(escape(text)+f' <link href="{escape(url)}" color="#176b87">[source]</link>',styles['SmallR']));md.append(text+' '+url+'\n')
     def footer(canvas,doc):
         canvas.saveState();canvas.setStrokeColor(colors.HexColor('#c9d7dd'));canvas.line(54,38,541,38);canvas.setFont('Helvetica',8);canvas.setFillColor(colors.HexColor('#52656d'));canvas.drawString(54,26,'ELEC5305 | Yixiang Ma | Final research project');canvas.drawRightString(541,26,str(doc.page));canvas.restoreState()
-    doc=SimpleDocTemplate(str(output/'Final_Project_Yixiang_Ma.pdf'),pagesize=(595.28,841.89),leftMargin=54,rightMargin=54,topMargin=43,bottomMargin=49,title='Latency-Quality Trade-offs in Real-Time Causal Speech Enhancement',author='Yixiang Ma')
-    doc.build(story,onFirstPage=footer,onLaterPages=footer)
+    doc=ReportDocument(str(output/'Final_Project_Yixiang_Ma.pdf'),pagesize=(595.28,841.89),leftMargin=54,rightMargin=54,topMargin=43,bottomMargin=49,title='Sound-Scene Analysis and Latency-Quality Trade-offs in Causal Speech Enhancement',author='Yixiang Ma')
+    doc.multiBuild(story,onFirstPage=footer,onLaterPages=footer)
     (output/'Final_Project_Yixiang_Ma.md').write_text('\n'.join(md),encoding='utf-8')
     print('Created',output/'Final_Project_Yixiang_Ma.pdf')
 

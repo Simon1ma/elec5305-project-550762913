@@ -1,17 +1,17 @@
 ---
 layout: default
-title: Latency-Quality Trade-offs in Causal Speech Enhancement
+title: Sound-Scene Analysis and Causal Speech Enhancement
 ---
 
-# Latency-Quality Trade-offs in Causal Speech Enhancement
+# Sound-Scene Analysis and Causal Speech Enhancement
 
 **Student:** Yixiang Ma | **SID:** 550762913 | **Course:** ELEC5305
 
-**Final research project prepared:** 2 November 2026
+**Final report revised:** 14 November 2026
 
 ## MATLAB code quick start - 14 November 2026
 
-[Download working code with a bundled public example](https://github.com/Simon1ma/elec5305-project-550762913/archive/refs/heads/main.zip). Fully extract it, set MATLAB Current Folder to the repository root and run `START_PROJECT`. Run `START_PROJECT('check')` for self-checks. Requires Signal Processing Toolbox; this public demonstration needs no Python or additional datasets. [Detailed setup](https://github.com/Simon1ma/elec5305-project-550762913/blob/main/START_HERE_MATLAB.txt). This is a dated code/reproducibility update; the existing submitted report/video files are retained.
+[Download working code with a bundled public example](https://github.com/Simon1ma/elec5305-project-550762913/archive/refs/heads/main.zip). Fully extract it, set MATLAB Current Folder to the repository root and run `START_PROJECT`. Run `START_PROJECT('check')` for self-checks. Requires Signal Processing Toolbox; this public demonstration needs no Python or additional datasets. [Detailed setup](https://github.com/Simon1ma/elec5305-project-550762913/blob/main/START_HERE_MATLAB.txt). The linked report, video and code form the 14 November 2026 resubmission revision.
 
 ## Final project submission
 
@@ -22,8 +22,8 @@ Wiener analysis windows (10/20/40/80 ms) are compared with the official
 pretrained DeepFilterNet3 reference. The separate VCTK-derived engineering cohort
 is reported with explicit training-overlap risk.
 
-[Read the 10-page report](output/pdf/Final_Project_Yixiang_Ma.pdf) |
-[Watch the 94-second code and audio demonstration](submissions/Final_Project_Demo.mp4) |
+[Read the 16-page report with linked contents](output/pdf/Final_Project_Yixiang_Ma.pdf) |
+[Watch the 181-second code and audio demonstration](submissions/Final_Project_Demo.mp4) |
 [Run the final code](code/final/README.md) |
 [See primary results and exact metrics](results/final_external/README.md) |
 [Read the data attributions](docs/final_data_attribution.md).
@@ -37,6 +37,12 @@ higher SNR. Timing is measured separately from output readiness. The experiment
 does not include live microphone/device latency.
 
 ![Final external STOI versus ready delay](results/final_external/figures/quality_latency.png)
+
+## Integrated personal-recording study
+
+The report includes nine development and nine new plastic-bottle/alarm/Chinese-reading recordings, frozen-model classification (8/9 new sources), a 27-mixture speech/bottle enhancement bridge, and a separately labelled exploratory online-estimation comparison. The update raises SNR in some conditions but reduces STOI in all 27 mixtures. The complete assessment ZIP includes private recordings for local reproduction; GitHub provides the code, frozen models, extracted features and exact numerical results.
+
+<video controls preload="metadata" style="width:100%;max-width:960px" src="submissions/Final_Project_Demo.mp4">[Download the demonstration](submissions/Final_Project_Demo.mp4)</video>
 
 ## Earlier causal development (28 October 2026)
 

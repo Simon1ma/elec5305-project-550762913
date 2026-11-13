@@ -1,22 +1,31 @@
-Latency-Quality Trade-offs in Real-Time Causal Speech Enhancement
+Sound-Scene Analysis and Latency-Quality Trade-offs in Causal Speech Enhancement
 
-ELEC5305 Final Project | Yixiang Ma | SID 550762913 | 2 November 2026
+ELEC5305 Final Project | Yixiang Ma | SID 550762913 | 14 November 2026
 
 ### Abstract
 
-How much speech quality does a causal enhancer gain by waiting for more audio? We test four STFT Wiener windows (10/20/40/80 ms) with a shared 100 ms decision-directed smoothing time constant and compare them with the official pretrained DeepFilterNet3 reference. The primary LibriSpeech test-clean evaluation contains 144 paired mixtures from twelve utterances, six speakers, four noise recordings and three input SNRs. A native-48-kHz VCTK-derived cohort provides a secondary engineering comparison. On LibriSpeech at 0 dB keyboard SNR, Wiener40 raises waveform SNR to 2.13 dB but lowers STOI from 0.7336 to 0.6953. At the same 40 ms oldest-sample block-ready delay, DeepFilterNet3 reaches 13.55 dB SNR and 0.8998 STOI. Longer Wiener windows improve mean STOI in this condition, although waveform SNR peaks earlier. All 25,718 profiled external Wiener calls fit within their hop budgets on the tested CPU.
+How do output delay and noise-estimation assumptions affect causal speech-enhancement quality across recorded sound conditions? We test four STFT Wiener windows (10/20/40/80 ms) with a shared 100 ms decision-directed smoothing time constant and compare them with the official pretrained DeepFilterNet3 reference. The primary LibriSpeech test-clean evaluation contains 144 paired mixtures from twelve utterances, six speakers, four noise recordings and three input SNRs. A native-48-kHz VCTK-derived cohort provides a secondary engineering comparison. On LibriSpeech at 0 dB keyboard SNR, Wiener40 raises waveform SNR to 2.13 dB but lowers STOI from 0.7336 to 0.6953. At the same 40 ms oldest-sample block-ready delay, DeepFilterNet3 reaches 13.55 dB SNR and 0.8998 STOI. Longer Wiener windows improve mean STOI in this condition, although waveform SNR peaks earlier. All 25,718 profiled external Wiener calls fit within their hop budgets on the tested CPU. A connected personal-recording study identifies 8/9 new isolated sound recordings using frozen multi-scale fusion. Twenty-seven reading/bottle mixtures expose a quiet-prefix calibration failure. An exploratory online power tracker raises SNR at 0 dB by 2.69 dB but reduces STOI in all 27 mixtures, illustrating speech-contamination costs.
 
 ## 1. Introduction and research question
 
 A causal speech enhancer must choose what to suppress using only the audio that has arrived. A longer analysis window may reveal spectral structure more clearly, but it also makes the processor wait longer and groups events across a wider interval. Average processing time can hide a slow individual block. We therefore measure quality, output readiness and computation separately.
 
-Research question: How does causal STFT scheduling delay affect Wiener enhancement quality, and how does this classical baseline compare with a pretrained enhancer at a reconciled delay budget? We examine single-channel speech mixed with recorded noise, using objective metrics and the official pretrained reference.
+Research question: How do output delay and noise-estimation assumptions affect causal speech-enhancement quality across recorded sound conditions? We examine single-channel speech mixed with recorded noise, using objective metrics and the official pretrained reference.
+
+To examine the sound-condition component of this question, the personal-recording study characterises acoustic structure alongside enhancement failures. Nine development and nine new recordings cover plastic-bottle pressing, alarms and Chinese reading. A frozen dual-scale classifier identifies 8/9 new sources. Twenty-seven reading/bottle mixtures expose a non-representative calibration prefix. A subsequent online-estimation comparison is explicitly exploratory.
 
 ### 1.1 Contribution and project continuity
 
 The semester project began with an offline demonstration using synthetic signals, FIR filtering and Wiener filtering. We then built a stateful causal processor, added recorded keyboard noise to the tests and introduced a pretrained comparator. The final study retains these processors and extends the evaluation to more speakers, noise recordings and input SNRs. We vary the Wiener window, put both output schedules on the same delay basis, compare paired quality scores and examine one keyboard event.
 
 The earlier single-utterance examples form the development stage. Code, protocol, source identifiers, checks, full result tables and an audition app accompany this report.
+
+
+---
+
+## Contents
+
+Contents are generated with linked section headings and page numbers in the PDF.
 
 
 ---
@@ -48,6 +57,23 @@ Le Roux et al. [6] motivate explicit separation-metric definitions and propose S
 | STOI and SI-SDR [4-6] | Complementary paired metrics | Objective predictor and waveform measures |
 
 Table 1. Prior work informs the processor, reference and complementary quality measures used in this latency-quality comparison.
+
+
+---
+
+### 2.4 Acoustic features and classifier choices
+
+Davis and Mermelstein [10] compare spectral representations for speech recognition and motivate mel-frequency cepstral analysis. Here MFCCs describe short-time spectral shape; temporal differences and periodicity complement the original relative acoustic descriptors. The classification task is sound identification rather than word transcription. This feature design lets us inspect alarm periodicity and bottle-event variability in the same recordings used to motivate enhancement failure analysis.
+
+Cortes and Vapnik [11] develop support-vector classification with a separating surface in a transformed feature space. We compare linear and radial-basis SVM routes against centroid distances. The centroid offers a transparent geometric baseline; the nonlinear route allows curved boundaries but adds sensitivity to its parameters and the small fitting sample. Source-held-out development and a frozen new-recording test measure whether its apparent development advantage transfers.
+
+Geurts et al. [12] introduce extremely randomised trees by randomising candidate attributes and split thresholds. This provides a different nonlinear comparator to the SVM. Our temporal design aggregates overlapping windows at two scales, retaining short events alongside longer structure. Equal source weighting prevents a long recording from dominating fitting. Fusion combines SVM/tree vote fractions as agreement scores; its value is assessed against its individual branches.
+
+### 2.5 Gap, rationale and tools learned
+
+The enhancement literature motivates statistical noise estimation and learned temporal filtering; the classification literature supplies acoustic representations and decision rules. The project examines how those choices behave under explicit output schedules and changing recorded noise. Public mixtures test delay and method effects. Personal source classification describes acoustic differences, and controlled speech/bottle mixtures then probe whether a quiet startup interval represents later events. A fixed-parameter online update isolates one estimator change. These stages address the same enhancement question through complementary measurements.
+
+Implementation required learning stateful MATLAB STFT/overlap-add processing, MFCC and delta extraction with Audio Toolbox, recording-grouped Python classifiers, the official Rust/Tract inference runtime, fixed-shift metric alignment and speaker bootstrap summaries. We distinguish output-ready delay from transport shift and measured computation. The GUI and fixed-gain audio comparisons expose results that a single aggregate SNR would conceal.
 
 
 ---
@@ -255,17 +281,108 @@ The reference writes PCM16 output and Wiener retains double precision; they also
 
 ---
 
-## 10. Discussion and conclusion
+## 10. Personal sound-scene classification
+
+### 10.1 Research connection, acquisition and frozen evaluation
+
+The personal-recording analysis characterises sound dynamics to interpret the noise-estimation assumptions in the main research question. The classifier analyses separate source recordings. It does not classify overlapping speech and noise, or automatically select an enhancer. Classification acquisition time is separate from enhancement output-ready delay.
+
+The author recorded plastic-bottle pressing, alarms and Chinese poem readings using a phone. Takes 01-03 provide nine development sources (87.9573 s); the three pilot files duplicate take 01 and add no sources. Takes 04-06 provide nine new sources (105.4293 s), recorded using the same phone in a bedroom within 0.5 m. Source and decoded hashes differ between sets.
+
+### 10.2 Features, grouping and comparisons
+
+The rich vector contains 69 descriptors: 12 relative acoustic features, 26 MFCC mean/SD values, 26 delta/delta-delta SD values and five periodicity/envelope descriptors. Analysis uses 16 kHz audio, 25 ms Hann frames and 10 ms hops. Temporal models aggregate 1.5/3 s windows with 50% overlap. Each source receives equal training weight; all its windows and perturbations remain in one fold. Standardisation uses training sources only.
+
+Linear SVM uses C=1; RBF SVM uses C=4 and gamma=scale. ExtraTrees uses 128 trees, maximum depth 6, minimum leaf size 2, square-root feature sampling and seed 5305. Retain windows with RMS at least 15% of the maximum at each source/scale (with a numerical floor and one-window fallback). Fusion averages class-vote fractions equally across scales and SVM/tree branches. Model settings and preprocessing are fixed before the new-recording test.
+
+Three development folds each hold out one take per class. Eleven routes compare centroids, linear/RBF SVM, ExtraTrees, temporal voting, feature ablations, fusion and fitting-side noise augmentation. The primary dual-scale fusion was specified before new-recording evaluation. Stored models and feature fingerprints were checked unchanged; no test refitting occurred. Half gain and seeded 20 dB white noise are probes of the same nine sources.
+
+| Route | Development original | New original | New white20 |
+| --- | --- | --- | --- |
+| 12-feature centroid | 8/9 | 8/9 | 4/9 |
+| Full-recording RBF SVM | 9/9 | 5/9 | 5/9 |
+| Rich dual-scale SVM | 8/9 | 8/9 | 8/9 |
+| Predeclared dual-scale fusion | 8/9 | 8/9 | 8/9 |
+
+Table 9. Recording-level results. Fusion also scores 8/9 at half gain; its macro-F1 is 0.88571 in all three new-recording conditions. Exact outcomes: results/scene_holdout/test_summary.csv.
+
+Fusion matches its SVM branch here. The full-recording RBF development score does not transfer to the new recordings. One recording changes accuracy by 11.11 percentage points.
+
+
+---
+
+## 11. Error analysis and personal enhancement bridge
+
+### 11.1 Alarm 05: a shared classification failure
+
+All eleven routes misclassify alarm 05. Fusion predicts plastic-bottle pressing; the other eight original new recordings are correct. Mean active-frame periodicity strength is 0.5326 for alarm 05 versus 0.7559/0.8694 for alarms 04/06. Spectral flatness is 0.0120 versus 0.0051/0.0047. These descriptors summarise acoustic differences between the alarm recordings. The temporal-feature ablation scores 6/9 original and 5/9 white20 versus 8/9 for the rich dual-scale SVM in both conditions.
+
+Figure 6. Frozen primary fusion on nine original new recordings; the sole error is alarm 05. Row/column axes distinguish actual and predicted labels.
+
+![Frozen fusion confusion](../../results/scene_holdout/primary_test_confusion.png)
+### 11.2 Same sources, controlled enhancement mixtures
+
+Three new readings crossed with three new bottle sources at 0/5/10 dB produce 27 mixtures and 162 quality rows. Use the first 8 s reading and first 8.4 s bottle source: natural 300 ms noise prefix, 8 s scored speech and 100 ms tail. Both processors consume identical float32 samples. Known transport shifts are removed. The quiet phone recording, with its room/microphone background, is the scoring reference. All mixtures share the same author and reuse three speech and three noise sources.
+
+At 0 dB input, noisy STOI is 0.4626; fixed Wiener40 yields 0.0003 dB output SNR and 0.4626 STOI. DeepFilterNet3 gives 3.41 dB and 0.5688. At 10 dB input, the reference gives 2.33 dB and 0.5480 STOI versus 0.6727 noisy; STOI decreases in six of nine cases. These outcomes expose speech-preservation costs as well as noise reduction.
+
+The bottle sources rise 34.39/53.87/53.53 dB in power after the prefix. On the fixed first case, energy-weighted squared Wiener40 gain is about 0.9999 and relative output/input change is 0.00132. The fixed estimator barely suppresses the later events. The diagnostics identify an unrepresentative startup interval.
+
+
+---
+
+## 12. Exploratory online noise-estimation comparison
+
+This additional experiment was specified after inspecting the existing bridge failures, on 13 November 2026. It is a post-test exploratory comparison using the same mixtures, with parameters specified before running this variant.
+
+Keep the 40 ms window, 20 ms hop, 300 ms calibration, 100 ms decision-directed smoothing, gain floor 0.05 and fixed alignment. Change only noise estimation: after processing each frame, exponentially average its observed power into the noise PSD. The next frame uses that estimate. Set the update time constant once to 0.5 s. This unconditional tracker can absorb speech into the noise estimate.
+
+```text
+beta = exp(-H / (fs * 0.5))
+D_next = beta * D_current + (1-beta) * abs(Y_current)^2
+```
+
+Only arrived mixture frames enter the processor. No clean reference, separate noise source, label or future audio controls the update. The same 27 baseline outputs were rerun and matched saved Wiener40 outputs. First-case bypass reconstruction, irregular chunk equivalence and future-input invariance passed.
+
+| Input SNR | Output SNR | STOI | SNR change vs fixed | STOI change vs fixed | STOI decreases vs noisy |
+| --- | --- | --- | --- | --- | --- |
+| 0 | 2.69 | 0.4037 | +2.69 | -0.0589 | 9/9 |
+| 5 | 5.54 | 0.5067 | +0.54 | -0.0614 | 9/9 |
+| 10 | 6.97 | 0.6068 | -3.03 | -0.0659 | 9/9 |
+
+Table 10. Equal-weight means of nine mixtures per SNR; paired changes use the unchanged fixed Wiener40 on each identical input. Full per-case SNR, SI-SDR and STOI: results/scene_adaptive/metrics.csv.
+
+At 0 dB, the update increases mean output SNR by 2.69 dB relative to fixed Wiener40, but reduces STOI from 0.4626 to 0.4037. At 5 dB, the SNR gain is 0.54 dB and STOI falls by 0.0614; at 10 dB, SNR falls by 3.03 dB and STOI by 0.0659. All 27 outputs have lower STOI than their noisy inputs.
+
+Unconditional updates test adaptation speed together with speech contamination. Any reduction in mixture energy can include speech attenuation, so output SNR and STOI must be read together. A stronger follow-up would freeze a speech-presence-aware estimator using development data and assess new sources, devices or rooms.
+
+
+---
+
+## 13. Discussion and conclusion
 
 Across the tested 10-80 ms Wiener windows, mean STOI generally rises as the ready delay grows. Waveform SNR can reach its peak at a shorter window, while keyboard-noise STOI remains below the noisy input. At the shared 40 ms ready delay, DeepFilterNet3 has higher mean STOI in every external noise/SNR condition; all corresponding STOI paired intervals are positive. In the 10 dB washing condition, Wiener40 retains higher SNR and SI-SDR. Choosing a processor and window therefore depends on the relative importance of envelope correlation, waveform error and output delay.
 
 The methods in [1-3] help interpret this pattern. Wiener uses a noise PSD fixed at startup and applies a real gain; DeepFilterNet3 uses learned multi-frame complex filtering. We relate these differences to measured output schedules and paired quality scores for two recorded noise classes. Public manifests, the mixture recipe and the scoring code define the sample population behind each comparison.
 
+The personal extension connects acoustic structure, source-level identification and enhancement startup sensitivity. Frozen fusion identifies 8/9 new recordings, while calibration mismatch explains near-identity fixed-Wiener output on the bottle mixtures. The exploratory update quantifies one simple alternative. Broader capture conditions and listener evaluation remain future work.
+
 ### Reproducible deliverables
 
-The repository provides runnable processors, preparation and scoring scripts, manifests, exact CSV results, validation evidence and instructions. launch_final_demo reruns selected methods, checks their agreement with evaluated outputs and plays clean, noisy and processed recordings at one common gain. The short video shows the app results and includes those audio excerpts. Repository: https://github.com/Simon1ma/elec5305-project-550762913 .
+The repository provides processors, preparation/scoring scripts, exact CSV results and a bundled public-data example. START_PROJECT reruns all four Wiener settings and checks saved-output agreement; its DeepFilterNet3 option plays saved official output. The check option runs numerical self-checks. The complete submission also includes the private personal-recording data for the personal mode of launch_final_demo. The video includes fixed-gain audio comparisons. Repository: https://github.com/Simon1ma/elec5305-project-550762913 .
 
-### References
+### Project links and acknowledgement
+
+[Project website](https://simon1ma.github.io/elec5305-project-550762913/)
+[GitHub code and run instructions](https://github.com/Simon1ma/elec5305-project-550762913)
+[Project video (local copy)](Final_Project_Demo.mp4)
+[Repository video location](https://github.com/Simon1ma/elec5305-project-550762913/blob/main/submissions/Final_Project_Demo.mp4)
+OpenAI Codex assisted with code development, experimental execution, report editing and media packaging.
+
+
+---
+
+## References
 
 [1] Y. Ephraim and D. Malah, "Speech Enhancement Using a Minimum Mean-Square Error Short-Time Spectral Amplitude Estimator," IEEE Trans. ASSP, 32(6), 1109-1121, 1984. https://malah.net.technion.ac.il/files/2017/08/Ephraim_Speech_Enhancement_ASSP84.pdf
 
@@ -284,3 +401,9 @@ The repository provides runnable processors, preparation and scoring scripts, ma
 [8] C. Valentini-Botinhao, "Noisy speech database for training speech enhancement algorithms and TTS models," University of Edinburgh, 2017; clean training recordings, CC BY 4.0. https://doi.org/10.7488/ds/2117
 
 [9] K. J. Piczak, "ESC: Dataset for Environmental Sound Classification," ACM Multimedia 2015. ESC-50 commit 33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6; CC BY-NC with individual clip attributions. https://github.com/karolpiczak/ESC-50
+
+[10] S. B. Davis and P. Mermelstein, "Comparison of Parametric Representations for Monosyllabic Word Recognition in Continuously Spoken Sentences," IEEE Trans. ASSP, 28(4), 357-366, 1980. https://doi.org/10.1109/TASSP.1980.1163420
+
+[11] C. Cortes and V. Vapnik, "Support-vector networks," Machine Learning, 20, 273-297, 1995. https://doi.org/10.1007/BF00994018
+
+[12] P. Geurts, D. Ernst and L. Wehenkel, "Extremely randomized trees," Machine Learning, 63, 3-42, 2006. https://doi.org/10.1007/s10994-006-6226-1

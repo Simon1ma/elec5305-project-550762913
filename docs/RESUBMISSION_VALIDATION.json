@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-14",
+  "report_pages": 16,
+  "report_render_review": "all sixteen pages inspected; linked contents checked",
+  "references": 12,
+  "existing_numeric_tables_and_equations": "unchanged against 13 November integrated report",
+  "report_sha256": "942dc3e0a1dfc163fb0ea96de82f18269ec1287f1f980f410a69fc569012d80e",
+  "video_seconds": 181,
+  "video_sha256": "bb195ac0580e3efe7fae2b93c98b3cc1a7469dc76653b821b523431bf3bef0a6",
+  "video_full_decode": "passed",
+  "archive_extraction": "complete archive extracted to new path containing spaces",
+  "public_MATLAB_checks": "passed",
+  "private_MATLAB_27_Wiener40_checks": "passed",
+  "private_GUI_methods": [
+    "Noisy",
+    "Wiener10",
+    "Wiener20",
+    "Wiener40",
+    "Wiener80",
+    "DeepFilterNet3"
+  ],
+  "private_scene_GUI": "passed; baseline route",
+  "frozen_python_evaluation": "passed; primary 8/9, no refitting",
+  "tested_environment": "Windows 11, MATLAB R2026a Update 5; Signal Processing Toolbox, Audio Toolbox/Python required only for advanced features",
+  "publication_target": "GitHub main and GitHub Pages",
+  "private_raw_audio": "included only in complete local assessment ZIP; excluded from public GitHub"
+}

@@ -6,6 +6,13 @@ if nargin<1,mode='demo';end
 switch lower(string(mode))
  case {"demo","enhancement"},result=run_public_demo(true);
  case {"check","test"},result=check_submission();
+ case "personal"
+  assert(isfile(fullfile(root,'data','local','scene_bridge','inputs','speech_04__container_press_04__snr0.mat')),'This mode needs the complete submission ZIP with private personal recordings.');
+  [app,controls]=launch_final_demo('personal');result=struct('app',app,'controls',controls);
+ case "personal_scene"
+  assert(isfile(fullfile(root,'data','local','scene','development','development_manifest.json')),'This mode needs the complete submission ZIP with private personal recordings.');
+  [app,controls]=launch_scene_demo('on','baseline');result=struct('app',app,'controls',controls);
+ case "personal_check",result=check_personal_submission();
  case {"classification","advanced"}
   for item={'development','advanced'},folder=fullfile(root,'data','local','scene',item{1});if ~isfolder(folder),mkdir(folder);end,end
   copyfile(fullfile(root,'data','scene_models','scene_model.mat'),fullfile(root,'data','local','scene','development','scene_model.mat'));

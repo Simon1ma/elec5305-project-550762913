@@ -1,8 +1,8 @@
 {
   "case_id": "1089-134686-0000__keyboard_typing_53501__snr0",
   "selection": "First external utterance, first keyboard source at 0 dB; not selected by scores.",
-  "duration_seconds": 112,
-  "video_style": "Captioned walkthrough using actual MATLAB app exports after processor reruns; no simulated live cursor or microphone capture.",
+  "duration_seconds": 181,
+  "video_style": "Captioned walkthrough of previously exported MATLAB app views and actual evaluated audio; includes personal scenes and exploratory online-estimation comparison.",
   "common_audio_gain": 0.95,
   "sample_rate": 48000,
   "listening_order": [
@@ -25,6 +25,19 @@
       "utterances": 12,
       "mixtures": 144
     }
+  ],
+  "personal_case": {
+    "case_id": "speech_04__container_press_04__snr0",
+    "selection": "First manifest case, set before outputs",
+    "common_playback_gain": 2.979511565674209,
+    "scoring_uses_original_amplitudes": true
+  },
+  "personal_audio_keys": [
+    "PersonalClean",
+    "PersonalNoisy",
+    "PersonalWiener40",
+    "PersonalDeepFilterNet3",
+    "PersonalAdaptive"
   ],
   "clip_metrics": {
     "Noisy": {
@@ -112,7 +125,7 @@
       "STOI": "0.9418208814339385"
     }
   },
-  "video_sha256": "bdb914477163b521ea931a33b7eb55fdc661bdf2bc951a07a967cce366e7e7b0",
+  "video_sha256": "bb195ac0580e3efe7fae2b93c98b3cc1a7469dc76653b821b523431bf3bef0a6",
   "app_export_sha256": {
     "demo_keyboard10.png": "f9e84a251cd1cc61108c019b7b03705957a4923b36d0953a02db6285c5c68504",
     "demo_keyboard80.png": "7422a4dc85469ebaa5f08765695677b963066b3e9da05a12ce4960c42f4e219e",
@@ -171,6 +184,41 @@
     },
     {
       "start_seconds": 100,
+      "seconds": 10,
+      "audio": null
+    },
+    {
+      "start_seconds": 110,
+      "seconds": 9,
+      "audio": null
+    },
+    {
+      "start_seconds": 119,
+      "seconds": 10,
+      "audio": "PersonalClean"
+    },
+    {
+      "start_seconds": 129,
+      "seconds": 10,
+      "audio": "PersonalNoisy"
+    },
+    {
+      "start_seconds": 139,
+      "seconds": 10,
+      "audio": "PersonalWiener40"
+    },
+    {
+      "start_seconds": 149,
+      "seconds": 10,
+      "audio": "PersonalDeepFilterNet3"
+    },
+    {
+      "start_seconds": 159,
+      "seconds": 10,
+      "audio": "PersonalAdaptive"
+    },
+    {
+      "start_seconds": 169,
       "seconds": 12,
       "audio": null
     }
