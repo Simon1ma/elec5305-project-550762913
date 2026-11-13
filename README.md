@@ -1,5 +1,25 @@
 # ELEC5305 Project - Yixiang Ma (550762913)
 
+
+## Download and test in MATLAB
+
+**Code update: 14 November 2026.** The existing submitted report/video files are preserved. This update improves code availability and reproducibility.
+
+Download [the repository ZIP](https://github.com/Simon1ma/elec5305-project-550762913/archive/refs/heads/main.zip), fully extract it, and set MATLAB Current Folder to the repository root. Run:
+
+```matlab
+START_PROJECT                    % Rerun original Wiener methods; plots and audio
+START_PROJECT('check')           % Causality/reconstruction/output self-checks
+START_PROJECT('classification')  % Bundled centroid model on public speech
+```
+
+Requires MATLAB with **Signal Processing Toolbox**; tested on Windows 11 / MATLAB R2026a Update 5. These commands need **no Python, personal recordings or further downloads**. A complete original public evaluation case (including calibration prefix) and exact saved outputs are bundled under `data/demo_public/`, with [source attributions](data/demo_public/ATTRIBUTION.md). Wiener10/20/40/80 are actually rerun and checked; the DeepFilterNet3 entry is labelled **saved reference** playback.
+
+[Detailed MATLAB setup](START_HERE_MATLAB.txt) | [Update and provenance record](docs/CODE_UPDATE_20261114.md)
+
+For frozen multi-scale scene-model evaluation, install the two documented Python requirement files, run `python code/scene/configure_runtime.py`, then `python code/scene/evaluate_scene_holdout.py`. Frozen models and extracted test features are included; no refitting is performed. Live rich-feature inference additionally needs MATLAB Audio Toolbox. Personal raw recordings remain private; their complete feature/mixing rebuild requires the original local recordings. The personal bridge/exploratory source code and numerical results are included.
+
+
 ## Latency-Quality Trade-offs in Real-Time Causal Speech Enhancement
 
 **Project site:** https://simon1ma.github.io/elec5305-project-550762913/

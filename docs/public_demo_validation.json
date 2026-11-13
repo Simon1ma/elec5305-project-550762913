@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-14",
+  "scope": "Post-submission code/reproducibility update; report and video files unchanged",
+  "environment": "Windows 11; MATLAB R2026a Update 5 with Signal Processing Toolbox; advanced scoring uses Python 3.12 and pinned requirements",
+  "fresh_git_archive": {
+    "matlab_causality_reconstruction_chunking": "passed",
+    "acoustic_feature_checks": "passed",
+    "all_four_Wiener_saved_output_agreement": "passed; maximum absolute error 0",
+    "public_speech_centroid_prediction": "speech",
+    "frozen_model_scoring": "passed; primary 8/9; no refitting"
+  },
+  "fixture_sha256": "2f1a666e506b19775923634047ce48716390bd295826892d390013ecb31b04b8",
+  "preserved_frozen_model_and_code_hashes": true,
+  "private_raw_audio_published": false,
+  "report_video_modified": false
+}

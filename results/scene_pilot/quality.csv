@@ -1,0 +1,4 @@
+CaseID,DurationSeconds,Peak,FullScaleSamples,Silent
+pilot_can_press,12.5013333333333,0.520975470542908,0,0
+pilot_alarm,7.808,0.442778825759888,0,0
+pilot_speech,10.4533333333333,0.381900072097778,0,0

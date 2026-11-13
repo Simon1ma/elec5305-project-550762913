@@ -1,0 +1,25 @@
+{
+  "freeze_date": "2026-11-07",
+  "version": "scene-centroid-relative-v1",
+  "primary_method": "nearest centroid, training-only standardisation, 12 features excluding absolute RMS",
+  "training_recordings": 9,
+  "training_source_sha256": [
+    "8c5e7e6c99cd9b7d686979da2087d0ea46ab833ef6a3250e1e5537ca372382d5",
+    "a4dc3d6facb42f2fe03772ac5717f1f5f7898699740582e1d74d023ec2e0ddf9",
+    "8e2887dda92200ba9cb9279b2aa8c197cb6665fdee7aaa6ded0f2266c2b91d7d",
+    "428d16ca0fda4e121f5941fad7ce3a3cf56b78131534bbd64709860de11b7617",
+    "497e96e23bef887aa30d640bc6e3389a90dec8e70ab0ffbf4686e999b7b87aea",
+    "79789dc58077bcecec1c74a171f2222b28b5de6a7aba5fac9b8e1f2ffd99b401",
+    "0eeb333b4f81cb8d36e2b29f4816a74bf18e39b21b7ace9c57688a2043703104",
+    "5765f3eb0475b80c2d940f3b90acabaa23b5628c415f85121957fee30098d1cc",
+    "098a68c17ec83d80a965c847987bec87bf181457aa23e31281057c08b4e5ddda"
+  ],
+  "model_sha256": "93a5b64f9040caa0aa3119139b22d86d5011f4f04de5d79bb0537a28061d53f6",
+  "code_sha256": {
+    "code/scene/scene_features.m": "128f0bcb224bc37bc44879e0c24ec409948eccd4f629744d7a07dd5cfdbee025",
+    "code/scene/scene_fit_classifier.m": "7a8eb40974e74b7910d6c67b6ba6fbdff0260b4499de99ff9653776b44638425",
+    "code/scene/scene_predict_features.m": "2418db377e49008ae82b8a651353b2c9661865e2231e8eb54f025b350b83674c",
+    "code/scene/evaluate_scene_development.m": "ece5ae268f43a2c93eb87b26e027ad94ed6f9fe69f7991f3edfb5209fcc1a28e"
+  },
+  "evaluation_status": "Recording-level development CV complete; independent test pending"
+}

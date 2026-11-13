@@ -7,18 +7,26 @@ if nargin<1
     if isfile(fullfile(root,'results','final_external','metrics.csv')),cohort="external";
     else,cohort="voicebank";end
 end
-if string(cohort)=="external",suffix='final_external';label='LibriSpeech test-clean; 16 kHz speech upsampled to 48 kHz';
+if string(cohort)=="personal",suffix='scene_bridge';label='Personal held-out recordings: 3 readings x 3 plastic-bottle sources x 3 SNRs';
+elseif string(cohort)=="external",suffix='final_external';label='LibriSpeech test-clean; 16 kHz speech upsampled to 48 kHz';
 else,suffix='final';label='VCTK-derived engineering cohort; upstream training overlap risk';end
 manifest=jsondecode(fileread(fullfile(root,'results',suffix,'input_manifest.json')));
-cases=manifest.cases;firstSpeech=string(cases(1).speech_id);
+allCases=manifest.cases;cases=allCases;firstSpeech=string(cases(1).speech_id);
 cases=cases(string({cases.speech_id})==firstSpeech);
 noiseNames=string({cases.noise_class})+"_"+string({cases.noise_source});
+if string(cohort)=="personal",noiseNames=replace(string({cases.noise_source}),'container_press_','Bottle ');end
 items=unique(noiseNames,'stable');
 metrics=readtable(fullfile(root,'results',suffix,'metrics.csv'),'TextType','string');
 app=uifigure('Name','ELEC5305 | Causal Latency-Quality Demonstration','Position',[70 60 1200 760]);
-g=uigridlayout(app,[7 6]);g.RowHeight={38,28,36,36,'1x','1x',40};g.ColumnWidth={125,195,110,135,'1x',170};
+g=uigridlayout(app,[8 6]);g.RowHeight={38,28,32,36,36,'1x','1x',40};g.ColumnWidth={125,195,110,135,'1x',170};
 heading=uilabel(g,'Text','Causal speech enhancement: latency and quality','FontSize',22,'FontWeight','bold');heading.Layout.Row=1;heading.Layout.Column=[1 6];
 scope=uilabel(g,'Text',label);scope.Layout.Row=2;scope.Layout.Column=[1 6];
+speechLabel=uilabel(g,'Text','Speech recording:');speechLabel.Layout.Row=3;speechLabel.Layout.Column=1;
+speechBox=uidropdown(g,'Items',cellstr(unique(string({allCases.speech_id}),'stable')), ...
+    'Value',char(firstSpeech),'ValueChangedFcn',@update);
+speechBox.Layout.Row=3;speechBox.Layout.Column=[2 3];
+speechNote=uilabel(g,'Text','Select a source recording, noise, SNR and processor.');
+speechNote.Layout.Row=3;speechNote.Layout.Column=[4 6];
 uilabel(g,'Text','Recorded noise:');
 noiseBox=uidropdown(g,'Items',cellstr(items),'Value',char(items(1)));
 uilabel(g,'Text','Input SNR (dB):');
@@ -29,15 +37,19 @@ uibutton(g,'Text','Play clean','ButtonPushedFcn',@(~,~)playClip('clean'));
 uibutton(g,'Text','Play noisy','ButtonPushedFcn',@(~,~)playClip('noisy'));
 uibutton(g,'Text','Play processed','ButtonPushedFcn',@(~,~)playClip('processed'));
 uibutton(g,'Text','Stop audio','ButtonPushedFcn',@(~,~)stopAudio());
-status=uilabel(g,'Text','Ready','FontWeight','bold');status.Layout.Row=4;status.Layout.Column=[5 6];
-ax1=uiaxes(g);ax1.Layout.Row=5;ax1.Layout.Column=[1 6];
-ax2=uiaxes(g);ax2.Layout.Row=6;ax2.Layout.Column=[1 6];
+status=uilabel(g,'Text','Ready','FontWeight','bold');status.Layout.Row=5;status.Layout.Column=[5 6];
+ax1=uiaxes(g);ax1.Layout.Row=6;ax1.Layout.Column=[1 6];
+ax2=uiaxes(g);ax2.Layout.Row=7;ax2.Layout.Column=[1 6];
 note=uilabel(g,'Text','Recorded-file simulation | Ready delay excludes compute/device delay | Separate 300 ms calibration | Common audio gain');
-note.Layout.Row=7;note.Layout.Column=[1 6];
-current=[];player=[];controls=struct('method',methodBox,'noise',noiseBox,'snr',snrBox,'run',runButton);
+note.Layout.Row=8;note.Layout.Column=[1 6];
+current=[];player=[];controls=struct('method',methodBox,'noise',noiseBox,'snr',snrBox,'run',runButton,'speech',speechBox);
 update([],[]);
     function update(~,~)
         stopAudio();
+        firstSpeech=string(speechBox.Value);
+        cases=allCases(string({allCases.speech_id})==firstSpeech);
+        noiseNames=string({cases.noise_class})+"_"+string({cases.noise_source});
+        if string(cohort)=="personal",noiseNames=replace(string({cases.noise_source}),'container_press_','Bottle ');end
         selected=cases(noiseNames==string(noiseBox.Value) & [cases.input_snr_db]==str2double(snrBox.Value));
         assert(isscalar(selected));
         data=load(fullfile(root,selected.input_mat));x=double(data.input);fs=double(data.fs);
@@ -61,16 +73,17 @@ update([],[]);
         end
         assert(max(abs(y-expected))<1e-10,'Demonstration output differs from evaluated output.');
         clean=data.clean;noisy=x(idx);allAudio=[clean noisy saved.outputs reference];gain=.95/max(1,max(abs(allAudio),[],'all'));
+        if string(cohort)=="personal",gain=.85/max(max(abs(allAudio),[],'all'),eps);end
         current=struct('clean',clean*gain,'noisy',noisy*gain,'processed',y*gain,'fs',fs);
         SNR=10*log10(sum(clean.^2)/sum((y-clean).^2));
         metric=metrics(metrics.CaseID==string(selected.case_id) & metrics.Method==method,:);
         status.Text=sprintf('Ready %.0f ms | SNR %.2f dB | STOI %.4f',ready,SNR,metric.STOI);
         t=(0:N-1).'/fs;plot(ax1,t,clean,'Color',[.6 .6 .6]);hold(ax1,'on');plot(ax1,t,y,'Color',[.04 .43 .55]);hold(ax1,'off');
-        xlabel(ax1,'Time in scored speech (s)');ylabel(ax1,'Amplitude');xlim(ax1,[0 4.5]);legend(ax1,{'Clean','Processed'});
+        xlabel(ax1,'Time in scored speech (s)');ylabel(ax1,'Amplitude');xlim(ax1,[0 N/fs]);legend(ax1,{'Clean','Processed'});
         title(ax1,sprintf('%s | %s | %s dB | %s',method,noiseBox.Value,snrBox.Value,firstSpeech),'Interpreter','none');
         [S,f,tSpec]=spectrogram(y,hann(960,'periodic'),720,1024,fs);cleanSpec=spectrogram(clean,hann(960,'periodic'),720,1024,fs);
         peak=max(abs(cleanSpec),[],'all');imagesc(ax2,tSpec,f/1000,20*log10(max(abs(S),peak*1e-6)));axis(ax2,'xy');clim(ax2,20*log10(peak)+[-70 0]);
-        xlim(ax2,[0 4.5]);ylim(ax2,[0 8]);xlabel(ax2,'Time in scored speech (s)');ylabel(ax2,'Frequency (kHz)');title(ax2,'Common-grid output spectrogram (0-8 kHz view)');colorbar(ax2);drawnow;
+        xlim(ax2,[0 N/fs]);ylim(ax2,[0 8]);xlabel(ax2,'Time in scored speech (s)');ylabel(ax2,'Frequency (kHz)');title(ax2,'Common-grid output spectrogram (0-8 kHz view)');colorbar(ax2);drawnow;
     end
     function playClip(which)
         stopAudio();player=audioplayer(current.(which),current.fs);play(player);

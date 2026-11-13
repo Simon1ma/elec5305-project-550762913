@@ -1,0 +1,201 @@
+{
+  "default_route": "rich_fusion_multiscale",
+  "routes": {
+    "handcrafted_centroid_full": [
+      "centroid",
+      [
+        "full"
+      ],
+      "handcrafted",
+      false
+    ],
+    "rich_centroid_full": [
+      "centroid",
+      [
+        "full"
+      ],
+      "dynamic",
+      false
+    ],
+    "rich_linear_svm_full": [
+      "linear",
+      [
+        "full"
+      ],
+      "dynamic",
+      false
+    ],
+    "rich_rbf_svm_full": [
+      "rbf",
+      [
+        "full"
+      ],
+      "dynamic",
+      false
+    ],
+    "rich_extratrees_full": [
+      "trees",
+      [
+        "full"
+      ],
+      "dynamic",
+      false
+    ],
+    "static_rbf_multiscale": [
+      "rbf",
+      [
+        "w1.5",
+        "w3"
+      ],
+      "static",
+      false
+    ],
+    "rich_rbf_single_scale": [
+      "rbf",
+      [
+        "w1.5"
+      ],
+      "dynamic",
+      false
+    ],
+    "rich_rbf_multiscale": [
+      "rbf",
+      [
+        "w1.5",
+        "w3"
+      ],
+      "dynamic",
+      false
+    ],
+    "rich_extratrees_multiscale": [
+      "trees",
+      [
+        "w1.5",
+        "w3"
+      ],
+      "dynamic",
+      false
+    ],
+    "rich_fusion_multiscale": [
+      "fusion",
+      [
+        "w1.5",
+        "w3"
+      ],
+      "dynamic",
+      false
+    ],
+    "rich_rbf_augmented": [
+      "rbf",
+      [
+        "w1.5",
+        "w3"
+      ],
+      "dynamic",
+      true
+    ]
+  },
+  "classes": [
+    "alarm",
+    "container_press",
+    "speech"
+  ],
+  "independent_sources": 9,
+  "feature_rows_with_probes": 507,
+  "feature_names": [
+    "RMS_CV",
+    "BurstRatio95_50",
+    "ZCR",
+    "Centroid_Hz",
+    "Centroid_SD_Hz",
+    "Flatness",
+    "Entropy",
+    "PositiveFlux",
+    "PositiveFlux_SD",
+    "LowFraction",
+    "HighFraction",
+    "Rolloff85_Hz",
+    "MFCC_Mean_01",
+    "MFCC_Mean_02",
+    "MFCC_Mean_03",
+    "MFCC_Mean_04",
+    "MFCC_Mean_05",
+    "MFCC_Mean_06",
+    "MFCC_Mean_07",
+    "MFCC_Mean_08",
+    "MFCC_Mean_09",
+    "MFCC_Mean_10",
+    "MFCC_Mean_11",
+    "MFCC_Mean_12",
+    "MFCC_Mean_13",
+    "MFCC_SD_01",
+    "MFCC_SD_02",
+    "MFCC_SD_03",
+    "MFCC_SD_04",
+    "MFCC_SD_05",
+    "MFCC_SD_06",
+    "MFCC_SD_07",
+    "MFCC_SD_08",
+    "MFCC_SD_09",
+    "MFCC_SD_10",
+    "MFCC_SD_11",
+    "MFCC_SD_12",
+    "MFCC_SD_13",
+    "Delta_SD_01",
+    "Delta_SD_02",
+    "Delta_SD_03",
+    "Delta_SD_04",
+    "Delta_SD_05",
+    "Delta_SD_06",
+    "Delta_SD_07",
+    "Delta_SD_08",
+    "Delta_SD_09",
+    "Delta_SD_10",
+    "Delta_SD_11",
+    "Delta_SD_12",
+    "Delta_SD_13",
+    "Delta2_SD_01",
+    "Delta2_SD_02",
+    "Delta2_SD_03",
+    "Delta2_SD_04",
+    "Delta2_SD_05",
+    "Delta2_SD_06",
+    "Delta2_SD_07",
+    "Delta2_SD_08",
+    "Delta2_SD_09",
+    "Delta2_SD_10",
+    "Delta2_SD_11",
+    "Delta2_SD_12",
+    "Delta2_SD_13",
+    "Periodicity_Mean",
+    "Periodicity_SD",
+    "StrongPeriodicFraction",
+    "Pitch_CV",
+    "EnvelopeRepeat"
+  ],
+  "sklearn": "1.9.1",
+  "numpy": "2.5.4",
+  "model_sha256": "908643bf7cacaa463d5abab591c96bd30b2770ae5b326dece2d0e9b54a60f290",
+  "score_unit": "source recording; three development folds",
+  "consensus_rule": "equal scale/model hard-vote fractions; no probability calibration",
+  "independent_test": "pending",
+  "source_sha256": [
+    "098a68c17ec83d80a965c847987bec87bf181457aa23e31281057c08b4e5ddda",
+    "0eeb333b4f81cb8d36e2b29f4816a74bf18e39b21b7ace9c57688a2043703104",
+    "428d16ca0fda4e121f5941fad7ce3a3cf56b78131534bbd64709860de11b7617",
+    "497e96e23bef887aa30d640bc6e3389a90dec8e70ab0ffbf4686e999b7b87aea",
+    "5765f3eb0475b80c2d940f3b90acabaa23b5628c415f85121957fee30098d1cc",
+    "79789dc58077bcecec1c74a171f2222b28b5de6a7aba5fac9b8e1f2ffd99b401",
+    "8c5e7e6c99cd9b7d686979da2087d0ea46ab833ef6a3250e1e5537ca372382d5",
+    "8e2887dda92200ba9cb9279b2aa8c197cb6665fdee7aaa6ded0f2266c2b91d7d",
+    "a4dc3d6facb42f2fe03772ac5717f1f5f7898699740582e1d74d023ec2e0ddf9"
+  ],
+  "feature_csv_sha256": "9f2b68726e3768818eb15060870e6b60f1c026e5bdf95654f9a2301f552a7c0b",
+  "code_sha256": {
+    "scene_features.m": "128f0bcb224bc37bc44879e0c24ec409948eccd4f629744d7a07dd5cfdbee025",
+    "scene_rich_features.m": "25d147f51a9a5f8bde6d1d3073385a6c42001b09662d706e26e9757a26e9bc16",
+    "scene_multiscale_features.m": "4500122ffd0d092ea6b929cff74f129f2a4d8cdd7f0a83314a955ced44c09103",
+    "extract_scene_advanced.m": "648de392a53049b468aa4b658b75ea983f2344e7880f4923244aa72d9ea21b8c",
+    "scene_advanced.py": "a3d70b7322cc98b81c426003956f79fc9760f08bc82cdf4eb3f888b6406774d7"
+  }
+}

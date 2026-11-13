@@ -5,6 +5,12 @@ MATLAB R2026a Update 5 with Signal Processing Toolbox, and the official
 DeepFilterNet v0.5.6 Windows Rust/Tract runtime. No Python neural-network framework
 or model training is required. Other operating systems are not validated here.
 
+## 0. Immediate MATLAB test from a fresh GitHub download
+
+Set Current Folder to the repository root and run `START_PROJECT` or `START_PROJECT('check')`. The bundled public case includes the original calibration prefix and saved results. All four original Wiener windows are rerun and checked against their evaluated outputs. The neural reference is saved playback in this quick demo. No Python, personal data or network setup is needed; MATLAB with Signal Processing Toolbox is required. See [quick-start instructions](../../START_HERE_MATLAB.txt).
+
+The full experiments below still require the indicated downloads. Advanced scene-model scoring is available using the bundled frozen models and extracted features; see the repository README.
+
 ## 1. Prepare reproducible inputs and reference runtime
 
 ```text
@@ -88,12 +94,22 @@ addpath(fullfile(pwd,'code','final'));
 launch_final_demo('external');
 ```
 
-Choose a recorded noise, SNR, and method, then click **Run processor**. The app
+Choose a speech recording, recorded noise, SNR, and method, then click **Run processor**. The app
 actually reruns the selected processor and asserts agreement with the evaluated
 output. Play clean, noisy, and processed clips using a common gain; stop playback
 before switching. The display reports the known ready delay, SNR, and the saved
 canonical pystoi score. This is recorded-file processing, not live microphone
-capture. The fixed first utterance is used throughout the demo.
+capture. The speech selector now exposes all prepared utterances.
+
+The personal-recording extension is prepared using `code/scene/README.md` and
+`results/scene_bridge/README.md`. After its 27 mixtures and outputs exist, run:
+
+```matlab
+launch_final_demo('personal');
+```
+
+This selects among the three new personal readings and three plastic-bottle
+sources. The scene-analysis app links to the same enhancement demonstration.
 
 ## Outputs and interpretation
 

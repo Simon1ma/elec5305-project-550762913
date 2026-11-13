@@ -1,0 +1,6 @@
+{
+  "cases": 27,
+  "status": "exploratory post-test comparison",
+  "protocol_sha256": "b256b2953cfc2446fe9a02cb48bc4c844925f8e4374ded7958c4056b306bf64a",
+  "matlab_checks": "27 baseline matches; first-case bypass reconstruction, chunk invariance, future invariance passed"
+}

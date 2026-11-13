@@ -9,6 +9,10 @@ title: Latency-Quality Trade-offs in Causal Speech Enhancement
 
 **Final research project prepared:** 2 November 2026
 
+## MATLAB code quick start - 14 November 2026
+
+[Download working code with a bundled public example](https://github.com/Simon1ma/elec5305-project-550762913/archive/refs/heads/main.zip). Fully extract it, set MATLAB Current Folder to the repository root and run `START_PROJECT`. Run `START_PROJECT('check')` for self-checks. Requires Signal Processing Toolbox; this public demonstration needs no Python or additional datasets. [Detailed setup](https://github.com/Simon1ma/elec5305-project-550762913/blob/main/START_HERE_MATLAB.txt). This is a dated code/reproducibility update; the existing submitted report/video files are retained.
+
 ## Final project submission
 
 The final version evaluates the established stateful causal speech-enhancement

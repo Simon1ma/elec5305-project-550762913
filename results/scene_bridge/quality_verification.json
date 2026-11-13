@@ -1,0 +1,11 @@
+{
+  "cases": 27,
+  "metric_rows": 162,
+  "new_speakers": 1,
+  "speech_sources": 3,
+  "bottle_sources": 3,
+  "input_snr_max_abs_error_db": 3.786829516627677e-09,
+  "shared_wav_mat_arrays_equal": true,
+  "calibration": "Natural first 300 ms, no event-based selection or calibration retuning",
+  "scoring_interval_seconds": 8
+}

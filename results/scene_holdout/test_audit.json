@@ -1,0 +1,11 @@
+{
+  "model_sha256_before": "908643bf7cacaa463d5abab591c96bd30b2770ae5b326dece2d0e9b54a60f290",
+  "model_sha256_after": "908643bf7cacaa463d5abab591c96bd30b2770ae5b326dece2d0e9b54a60f290",
+  "new_sources": 9,
+  "development_sources": 9,
+  "hash_overlap": 0,
+  "fitting_performed": false,
+  "primary_route_frozen_before_test": "rich_fusion_multiscale",
+  "scoring_unit": "new source recording; perturbations share that source",
+  "test_feature_sha256": "b90c9d7133b343da4c6cb1df96d8568610e3ea674887a52f2436afac9521d752"
+}

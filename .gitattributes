@@ -1,1 +1,8 @@
 *.pdf binary
+
+# Reproducible MATLAB/Python source bytes across Windows and ZIP downloads.
+*.m text eol=lf
+*.py text eol=lf
+*.mat binary
+*.joblib binary
+results/scene_advanced/multiscale_features.csv -text whitespace=cr-at-eol

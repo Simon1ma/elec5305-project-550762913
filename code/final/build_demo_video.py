@@ -55,7 +55,7 @@ def main():
     scenes=[]
     def add(path,duration,audio=None):scenes.append({'image':path,'seconds':duration,'audio':audio})
     add(card('Causal speech enhancement: latency and quality',[
-        'Question: what quality does a causal enhancer retain as its output waiting time changes?',
+        'Question: how do delay and noise-estimation assumptions affect causal enhancement across recorded sounds?',
         'Stateful MATLAB Wiener: 10 / 20 / 40 / 80 ms windows.',
         'Official pretrained DeepFilterNet3: compare at the same 40 ms ready delay.',
         'This captioned walkthrough uses actual app exports and evaluated audio. Recorded files; no live microphone latency claim.'
@@ -103,6 +103,31 @@ def main():
         '25,718 profiled Wiener calls met their hop budgets on this PC. This is not a hard real-time guarantee.',
         'LibriSpeech has 16 kHz source bandwidth. VCTK results are secondary because of upstream training-overlap risk.'
     ],'09_limits'),12)
+    # Personal recordings: previously exported app views, with actual evaluated audio.
+    personal=ROOT/'data/local/scene_bridge'
+    pm=json.loads((ROOT/'results/scene_bridge/demo_selection.json').read_text())
+    for method in ['Clean','Noisy','Wiener40','DeepFilterNet3']:
+        yy,rr=sf.read(personal/'demo'/(method+'.wav'));assert rr==fs
+        signals['Personal'+method]=yy/gain
+    yy=loadmat(ROOT/'data/local/scene_adaptive'/(pm['case_id']+'.mat'),simplify_cells=True)['output']
+    signals['PersonalAdaptive']=yy*pm['common_playback_gain']/gain
+    def personal_view(path,title,caption,name):
+        im=Image.new('RGB',(W,H),'#f6f9fb');dr=ImageDraw.Draw(im)
+        dr.text((60,26),title,font=font(36,True),fill='#163c50')
+        shot=ImageOps.contain(Image.open(path).convert('RGB'),(1490,900));im.paste(shot,((W-shot.width)//2,95))
+        dr.rectangle((0,H-90,W,H),fill='#163c50')
+        for j,line in enumerate(textwrap.wrap(caption,105)):dr.text((50,H-78+j*34),line,font=font(25),fill='white')
+        target=work/(name+'.png');im.save(target);return target
+    add(personal_view(ROOT/'results/scene_advanced/demo_temporal_fusion.png','Sound classification: frozen multi-scale fusion','Historical development app view. Later frozen test: 8/9 new recordings. Separate sources; no automatic routing.','11_scene_app'),10)
+    add(personal_view(ROOT/'results/scene_holdout/primary_test_confusion.png','New recordings: 8 / 9 correct','Alarm 05 is mistaken for plastic-bottle pressing. Same author/phone environment; broad generalisation is untested.','12_scene_test'),9)
+    for i,method in enumerate(['Clean','Noisy','Wiener40','DeepFilterNet3']):
+        add(personal_view(ROOT/'results/scene_bridge'/('demo_deepfilter.png' if method=='DeepFilterNet3' else 'demo_wiener40.png'),'Personal listening: '+method,'Audio: '+method+' | First manifest case at 0 dB | One common playback gain across this personal comparison.',f'13_personal_{i}'),10,'Personal'+method)
+    add(card('Online update: a measured trade-off',[
+        'Exploratory comparator: update the noise PSD after each frame with a fixed 0.5 s time constant.',
+        'At 0 dB: SNR +2.69 dB vs fixed Wiener40; mean STOI falls from 0.4626 to 0.4037.',
+        'All 27 mixtures have lower STOI than noisy input. A speech-unaware update can absorb speech.',
+        'Audio: the same first personal case, adaptive output. These reused sources are not a new independent test.'
+    ],'14_adaptive'),10,'PersonalAdaptive')
     add(card('Sources and reproducibility',[
         'Speech: LibriSpeech test-clean, OpenSLR SLR12 (Panayotov et al., CC BY 4.0). Recording 1089-134686-0000; first 4.5 s, resampled and mixed.',
         'Keyboard: ESC-50 1-53501-A, derived from typing.wav by jennypendel, Freesound 53501 (CC Sampling+; ESC-50 CC BY-NC). Resampled/scaled; mixed and enhanced.',
@@ -112,7 +137,7 @@ def main():
     audio=np.zeros((round(sum(s['seconds'] for s in scenes)*fs),),dtype=np.float64);offset=0
     for scene in scenes:
         if scene['audio']:
-            y=signals[scene['audio']]*gain;begin=round((offset+1)*fs);audio[begin:begin+N]=y
+            y=signals[scene['audio']]*gain;begin=round((offset+1)*fs);audio[begin:begin+len(y)]=y
         offset+=scene['seconds']
     soundtrack=work/'soundtrack.wav';sf.write(soundtrack,audio,fs,subtype='PCM_24')
     listing=work/'scenes.txt'
@@ -121,9 +146,9 @@ def main():
     command=[imageio_ffmpeg.get_ffmpeg_exe(),'-y','-f','concat','-safe','0','-i',str(listing),'-i',str(soundtrack),'-r','24','-c:v','libx264','-preset','medium','-crf','21','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-t',str(offset),'-movflags','+faststart',str(video)]
     subprocess.run(command,check=True,stdout=subprocess.DEVNULL,stderr=(work/'encoding.log').open('w'))
     evidence={'case_id':case['case_id'],'selection':'First external utterance, first keyboard source at 0 dB; not selected by scores.',
-        'duration_seconds':offset,'video_style':'Captioned walkthrough using actual MATLAB app exports after processor reruns; no simulated live cursor or microphone capture.',
+        'duration_seconds':offset,'video_style':'Captioned walkthrough of previously exported MATLAB app views and actual evaluated audio; includes personal scenes and exploratory online-estimation comparison.',
         'common_audio_gain':gain,'sample_rate':fs,'listening_order':['Clean','Noisy','Wiener10','Wiener80','DeepFilterNet3'],
-        'evaluation_cohorts':cohorts,
+        'evaluation_cohorts':cohorts,'personal_case':pm,'personal_audio_keys':[k for k in signals if k.startswith('Personal')],
         'clip_metrics':case_scores,'video_sha256':hashlib.sha256(video.read_bytes()).hexdigest(),
         'app_export_sha256':{name:hashlib.sha256((OUT/'figures'/name).read_bytes()).hexdigest() for name in ['demo_keyboard10.png','demo_keyboard80.png','demo_deepfilter.png']},
         'scenes':[{'start_seconds':sum(x['seconds'] for x in scenes[:i]),'seconds':s['seconds'],'audio':s['audio']} for i,s in enumerate(scenes)]}

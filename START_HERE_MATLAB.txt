@@ -1,0 +1,18 @@
+ELEC5305 - MATLAB quick start (14 November 2026 code update)
+
+1. Download the repository ZIP from GitHub (Code > Download ZIP) and fully extract it, or git clone.
+2. Set MATLAB Current Folder to the extracted repository root containing START_PROJECT.m.
+3. Run START_PROJECT. It reruns all four Wiener windows on the included public-data mixture, checks saved-output agreement, displays waveforms/spectrogram and offers shared-gain audio playback.
+4. Run START_PROJECT('check') for reconstruction, chunking, causality, acoustic-feature and saved-output tests.
+5. Run START_PROJECT('classification') to classify the public speech excerpt using the bundled original centroid model.
+
+Core demo requires MATLAB and Signal Processing Toolbox. Validated on Windows 11, MATLAB R2026a Update 5. No Python or download is needed for these three commands. Use a writable extracted folder; setup writes only under ignored data/local.
+
+The DFNet3 dropdown entry is explicitly saved reference playback; it does not rerun the neural processor. Full official inference and public-corpus processing instructions remain in code/final/README.md.
+
+Optional frozen advanced-model evaluation: install Python 3.12 dependencies from code/final/requirements.txt and code/scene/requirements-advanced.txt, then run:
+python code/scene/configure_runtime.py
+python code/scene/evaluate_scene_holdout.py
+This checks the exact models/features on the nine new source recordings, without refitting; precomputed features are bundled. Optional live MFCC inference via START_PROJECT('advanced') additionally requires Audio Toolbox.
+
+Personal raw audio is not published. Rebuilding its features and 27 mixtures from raw recordings requires the private recordings described in code/scene/README.md. All source code and numerical tables are provided. This is separate from the fully bundled public example above.
